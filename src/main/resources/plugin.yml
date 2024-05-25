@@ -1,0 +1,8 @@
+name: GuguSlimefunLib
+version: '${project.version}'
+main: me.ddggdd135.guguslimefunlib.GuguSlimefunLib
+api-version: '1.16'
+authors:
+  - JWJUN233233
+depend:
+  - Slimefun
