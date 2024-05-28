@@ -44,19 +44,22 @@ public class GuguSlimefunItem extends SlimefunItem {
     public GuguSlimefunItem(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack... recipe) {
         super(itemGroup, item, recipeType, recipe);
 
-        addItemHandler(createTicker());
+        if (item.getType().isBlock())
+            addItemHandler(createTicker());
     }
 
     public GuguSlimefunItem(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, @Nullable ItemStack recipeOutput, ItemStack... recipe) {
         super(itemGroup, item, recipeType, recipe, recipeOutput);
 
-        addItemHandler(createTicker());
+        if (item.getType().isBlock())
+            addItemHandler(createTicker());
     }
 
     protected GuguSlimefunItem(ItemGroup itemGroup, ItemStack item, String id, RecipeType recipeType, ItemStack...recipe) {
         super(itemGroup, item, id, recipeType, recipe);
 
-        addItemHandler(createTicker());
+        if (item.getType().isBlock())
+            addItemHandler(createTicker());
     }
 
     public BlockTicker createTicker() {
