@@ -134,4 +134,26 @@ public class AdvancedCustomItemStack extends CustomItemStack {
         }
         throw new RuntimeException("无法找到" + sfId);
     }
+
+    @Nonnull
+    public static AdvancedCustomItemStack fromSlimefunItem(String sfId, String name) {
+        SlimefunItem sfItem = SlimefunItem.getById(sfId);
+        if (sfItem != null) {
+            return new AdvancedCustomItemStack(sfItem.getItem().clone(), name);
+        }
+        throw new RuntimeException("无法找到" + sfId);
+    }
+
+    @Nonnull
+    public static AdvancedCustomItemStack fromSlimefunItem(String sfId, String... lore) {
+        SlimefunItem sfItem = SlimefunItem.getById(sfId);
+        if (sfItem != null) {
+            return new AdvancedCustomItemStack(sfItem.getItem().clone(), Arrays.stream(lore).toList());
+        }
+        throw new RuntimeException("无法找到" + sfId);
+    }
+
+    public static AdvancedCustomItemStack fromLore(ItemStack itemStack, String... lore) {
+        return new AdvancedCustomItemStack(itemStack, Arrays.stream(lore).toList());
+    }
 }
