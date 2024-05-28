@@ -3,6 +3,7 @@ package me.ddggdd135.guguslimefunlib.utils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.groups.NestedItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.groups.SubItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import me.ddggdd135.guguslimefunlib.items.AdvancedNestedItemGroup;
 import me.ddggdd135.guguslimefunlib.items.ItemGroupButton;

@@ -83,5 +83,17 @@
           <version>dev-SNAPSHOT</version>
           <scope>provided</scope>
       </dependency>
+      <dependency>
+          <groupId>org.graalvm.js</groupId>
+          <artifactId>js-scriptengine</artifactId>
+          <version>23.0.2</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.graalvm.js</groupId>
+          <artifactId>js</artifactId>
+          <version>23.0.2</version>
+          <scope>provided</scope>
+      </dependency>
   </dependencies>
 </project>
