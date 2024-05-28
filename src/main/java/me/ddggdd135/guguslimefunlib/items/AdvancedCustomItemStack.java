@@ -51,7 +51,7 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     }
 
     public AdvancedCustomItemStack(Material type, String name, List<String> lore) {
-        super(type, CMIChatColor.translate(name), CMIChatColor.translate(String.valueOf(lore)));
+        super(type, CMIChatColor.translate(name), lore);
     }
 
     public AdvancedCustomItemStack(ItemStack item, List<String> list) {
@@ -139,7 +139,9 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     public static AdvancedCustomItemStack fromSlimefunItem(String sfId, String name) {
         SlimefunItem sfItem = SlimefunItem.getById(sfId);
         if (sfItem != null) {
-            return new AdvancedCustomItemStack(sfItem.getItem().clone(), name);
+            return new AdvancedCustomItemStack(sfItem.getItem().clone(), itemMeta -> {
+                itemMeta.setDisplayName(name);
+            });
         }
         throw new RuntimeException("无法找到" + sfId);
     }
