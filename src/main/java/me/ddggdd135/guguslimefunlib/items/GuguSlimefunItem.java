@@ -6,19 +6,26 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactivity;
+import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
+import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import lombok.Getter;
 import lombok.Setter;
+import me.ddggdd135.guguslimefunlib.script.ScriptEval;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
 public class GuguSlimefunItem extends SlimefunItem {
+    @Getter
+    @Setter
+    private ScriptEval eval;
     @Getter
     @Setter
     private @Nullable RainbowType rainbowType = null;
@@ -44,22 +51,34 @@ public class GuguSlimefunItem extends SlimefunItem {
     public GuguSlimefunItem(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack... recipe) {
         super(itemGroup, item, recipeType, recipe);
 
-        if (item.getType().isBlock())
+        if (item.getType().isBlock() && !(this instanceof NotPlaceable))
             addItemHandler(createTicker());
+        addItemHandler((ItemUseHandler) e -> {
+            if (eval != null)
+                eval.evalFunction("onUse", e, this);
+        });
     }
 
     public GuguSlimefunItem(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, @Nullable ItemStack recipeOutput, ItemStack... recipe) {
         super(itemGroup, item, recipeType, recipe, recipeOutput);
 
-        if (item.getType().isBlock())
+        if (item.getType().isBlock() && !(this instanceof NotPlaceable))
             addItemHandler(createTicker());
+        addItemHandler((ItemUseHandler) e -> {
+            if (eval != null)
+                eval.evalFunction("onUse", e, this);
+        });
     }
 
     protected GuguSlimefunItem(ItemGroup itemGroup, ItemStack item, String id, RecipeType recipeType, ItemStack...recipe) {
         super(itemGroup, item, id, recipeType, recipe);
 
-        if (item.getType().isBlock())
+        if (item.getType().isBlock() && !(this instanceof NotPlaceable))
             addItemHandler(createTicker());
+        addItemHandler((ItemUseHandler) e -> {
+            if (eval != null)
+                eval.evalFunction("onUse", e, this);
+        });
     }
 
     public BlockTicker createTicker() {
@@ -81,7 +100,7 @@ public class GuguSlimefunItem extends SlimefunItem {
             if (!block.getType().isAir()) {
                 int i = state % rainbowType.asList().size();
                 Material material = rainbowType.asList().get(i);
-                block.setType(material);
+                Slimefun.runSync(() -> block.setType(material));
             }
         }
         state++;
@@ -92,7 +111,7 @@ public class GuguSlimefunItem extends SlimefunItem {
     }
 
     @Override
-    public void register(SlimefunAddon slimefunAddon) {
+    public void register(@Nonnull SlimefunAddon slimefunAddon) {
         super.register(slimefunAddon);
         allGuguSlimefunItems.add(this);
     }

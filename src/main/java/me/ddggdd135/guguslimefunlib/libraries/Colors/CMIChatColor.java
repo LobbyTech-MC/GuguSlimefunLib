@@ -8,6 +8,7 @@ import lombok.Getter;
 import me.ddggdd135.guguslimefunlib.libraries.Version.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.checkerframework.checker.units.qual.A;
 
 public class CMIChatColor {
 
@@ -299,8 +300,9 @@ public class CMIChatColor {
     }
 
     public static List<String> translate(List<String> lines) {
-        lines.replaceAll(CMIChatColor::translate);
-        return lines;
+        List<String> result = new ArrayList<>(lines);
+        result.replaceAll(CMIChatColor::translate);
+        return result;
     }
     public static String[] translate(String... lines) {
         List<String> list = new ArrayList<>(Arrays.stream(lines).toList());

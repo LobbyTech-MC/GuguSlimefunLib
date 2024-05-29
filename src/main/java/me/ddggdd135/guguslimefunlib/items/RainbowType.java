@@ -23,7 +23,6 @@ public class RainbowType {
 
     public RainbowType(@Nonnull Material... materials) {
         Validate.noNullElements(materials, "The List cannot contain any null elements");
-        Validate.isTrue(materials.length == 16, "Expected 16, received: " + materials.length + ". Did you miss a color?");
         this.list = Collections.unmodifiableList(Arrays.asList(materials));
     }
 

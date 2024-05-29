@@ -38,12 +38,10 @@ public class AdvancedCustomItemStack extends CustomItemStack {
 
     public AdvancedCustomItemStack(ItemStack item, String name, String... lore) {
         super(item, CMIChatColor.translate(name), CMIChatColor.translate(lore));
-        setLore(CMIChatColor.translate(Arrays.asList(lore)));
     }
 
     public AdvancedCustomItemStack(ItemStack item, Color color, String name, String... lore) {
         super(item, color, CMIChatColor.translate(name), CMIChatColor.translate(lore));
-        setLore(CMIChatColor.translate(Arrays.asList(lore)));
     }
 
     public AdvancedCustomItemStack(Material type, String name, String... lore) {
@@ -55,12 +53,13 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     }
 
     public AdvancedCustomItemStack(ItemStack item, List<String> list) {
-        super(item, CMIChatColor.translate(list));
+        super(item);
         setLore(CMIChatColor.translate(list));
     }
 
     public AdvancedCustomItemStack(Material type, List<String> list) {
-        super(type, CMIChatColor.translate(list));
+        super(type);
+        setLore(CMIChatColor.translate(list));
     }
 
     public AdvancedCustomItemStack(ItemStack item, int amount) {
@@ -139,9 +138,7 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     public static AdvancedCustomItemStack fromSlimefunItem(String sfId, String name) {
         SlimefunItem sfItem = SlimefunItem.getById(sfId);
         if (sfItem != null) {
-            return new AdvancedCustomItemStack(sfItem.getItem().clone(), itemMeta -> {
-                itemMeta.setDisplayName(name);
-            });
+            return new AdvancedCustomItemStack(sfItem.getItem().clone(), itemMeta -> itemMeta.setDisplayName(name));
         }
         throw new RuntimeException("无法找到" + sfId);
     }
