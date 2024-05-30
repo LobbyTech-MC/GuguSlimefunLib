@@ -73,8 +73,10 @@ public class JavaScriptEval extends ScriptEval {
 
         try {
             return jsEngine.invokeFunction(funName, args);
-        } catch (ScriptException | NoSuchMethodException e) {
+        } catch (ScriptException e) {
             e.printStackTrace();
+        } catch (NoSuchMethodException ignored) {
+
         }
 
         return null;

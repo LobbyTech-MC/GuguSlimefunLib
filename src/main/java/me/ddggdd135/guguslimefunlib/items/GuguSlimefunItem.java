@@ -2,6 +2,7 @@ package me.ddggdd135.guguslimefunlib.items;
 
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -113,6 +114,8 @@ public class GuguSlimefunItem extends SlimefunItem {
     @Override
     public void register(@Nonnull SlimefunAddon slimefunAddon) {
         super.register(slimefunAddon);
+        if (this instanceof GEOResource geoResource)
+            geoResource.register();
         allGuguSlimefunItems.add(this);
     }
 }

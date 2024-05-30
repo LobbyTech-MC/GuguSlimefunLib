@@ -6,11 +6,12 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.ddggdd135.guguslimefunlib.items.GuguSlimefunItem;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 
 public class WitherListener implements Listener {
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onWitherDestroy(EntityChangeBlockEvent e) {
         if (e.getEntity().getType() == EntityType.WITHER) {
             var controller = Slimefun.getDatabaseManager().getBlockDataController();

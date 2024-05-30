@@ -30,8 +30,9 @@ public class ItemGroupButton extends SubItemGroup {
                     continue;
                 }
 
-                String type = action.split(" ")[0];
-                String content = action.split(" ")[1];
+                int index = action.indexOf(" ");
+                String type = action.substring(0, index);
+                String content = action.substring(index + 1);
                 switch (type) {
                     case "link" -> {
                         p.sendMessage(CMIChatColor.translate("&e单击此处: "));

@@ -74,24 +74,24 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     public static AdvancedCustomItemStack fromHashCode(String hashCode, String name, String... lore) {
         PlayerSkin skin = PlayerSkin.fromHashCode(hashCode);
         return new AdvancedCustomItemStack(PlayerHead.getItemStack(skin), (ItemMeta meta) -> {
-            meta.setDisplayName(name);
-            meta.setLore(Arrays.stream(lore).toList());
+            meta.setDisplayName(CMIChatColor.translate(name));
+            meta.setLore(Arrays.stream(CMIChatColor.translate(lore)).toList());
         });
     }
     @Nonnull
     public static AdvancedCustomItemStack fromBase64(String base64, String name, String... lore) {
         PlayerSkin skin = PlayerSkin.fromBase64(base64);
         return new AdvancedCustomItemStack(PlayerHead.getItemStack(skin), (ItemMeta meta) -> {
-            meta.setDisplayName(name);
-            meta.setLore(Arrays.stream(lore).toList());
+            meta.setDisplayName(CMIChatColor.translate(name));
+            meta.setLore(Arrays.stream(CMIChatColor.translate(lore)).toList());
         });
     }
     @Nonnull
     public static AdvancedCustomItemStack fromURL(String url, String name, String... lore) {
         PlayerSkin skin = PlayerSkin.fromURL(url);
         return new AdvancedCustomItemStack(PlayerHead.getItemStack(skin), (ItemMeta meta) -> {
-            meta.setDisplayName(name);
-            meta.setLore(Arrays.stream(lore).toList());
+            meta.setDisplayName(CMIChatColor.translate(name));
+            meta.setLore(Arrays.stream(CMIChatColor.translate(lore)).toList());
         });
     }
     public AdvancedCustomItemStack doGlow() {
