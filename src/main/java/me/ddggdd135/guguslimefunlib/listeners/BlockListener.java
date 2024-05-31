@@ -16,7 +16,7 @@ public class BlockListener implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         Material item = e.getBlock().getType();
         SlimefunBlockData blockData = StorageCacheUtils.getBlock(e.getBlock().getLocation());
-        String block = blockData != null ? blockData.getSfId() : item.getKey().asString().toUpperCase();
+        String block = blockData != null ? blockData.getSfId() : item.getKey().value().toUpperCase();
 
         for (GuguSlimefunItem guguSlimefunItem : GuguSlimefunItem.allGuguSlimefunItems) {
             if (guguSlimefunItem.getDropFrom() != null && guguSlimefunItem.getDropFrom().equals(block)) {
