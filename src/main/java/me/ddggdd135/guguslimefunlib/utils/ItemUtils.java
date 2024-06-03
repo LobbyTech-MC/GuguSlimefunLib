@@ -2,13 +2,8 @@ package me.ddggdd135.guguslimefunlib.utils;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Nonnull;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
@@ -17,6 +12,11 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ItemUtils {
     @Nonnull
@@ -58,8 +58,8 @@ public class ItemUtils {
     }
 
     @Nonnull
-    public static Map<ItemStack, Integer> getAmounts(@Nonnull ItemStack[] itemStacks) {
-        Map<ItemStack, Integer> storage = new ItemHashMap<>();
+    public static ItemHashMap<Integer> getAmounts(@Nonnull ItemStack[] itemStacks) {
+        ItemHashMap<Integer> storage = new ItemHashMap<>();
         for (ItemStack itemStack : itemStacks) {
             if (itemStack == null || itemStack.getType().isAir()) continue;
             if (storage.containsKey(itemStack)) {
@@ -86,9 +86,9 @@ public class ItemUtils {
     }
 
     @Nonnull
-    public static Map<ItemStack, Integer> addItems(
+    public static ItemHashMap<Integer> addItems(
             @Nonnull Map<ItemStack, Integer> source, @Nonnull Map<ItemStack, Integer> toAdd) {
-        Map<ItemStack, Integer> storage = new ItemHashMap<>(source);
+        ItemHashMap<Integer> storage = new ItemHashMap<>(source);
         for (ItemStack itemStack : toAdd.keySet()) {
             if (storage.containsKey(itemStack)) {
                 storage.put(itemStack, storage.get(itemStack) + toAdd.get(itemStack));
@@ -151,16 +151,12 @@ public class ItemUtils {
         return item;
     }
 
-    public static ItemStack[] tryTakeItem(@Nonnull BlockMenu blockMenu, @Nonnull ItemHashMap<Integer> items) {
-        Map<ItemStack, Integer> amounts = ItemUtils.getAmounts(ItemUtils.createItems(items));
+    public static ItemStack[] tryTakeItem(@Nonnull BlockMenu blockMenu, @Nonnull ItemHashMap<Integer> items, int... slots) {
+        ItemHashMap<Integer> amounts = new ItemHashMap<>(items);
         ItemHashMap<Integer> found = new ItemHashMap<>();
 
         for (ItemStack itemStack : amounts.keySet()) {
-            int[] outputSlots = blockMenu
-                    .getPreset()
-                    .getSlotsAccessedByItemTransport(blockMenu, ItemTransportFlow.WITHDRAW, itemStack);
-            if (outputSlots == null) continue;
-            for (int slot : outputSlots) {
+            for (int slot : slots) {
                 ItemStack item = blockMenu.getItemInSlot(slot);
                 if (item == null || item.getType().isAir()) continue;
                 if (SlimefunUtils.isItemSimilar(item, itemStack, true, false)) {
