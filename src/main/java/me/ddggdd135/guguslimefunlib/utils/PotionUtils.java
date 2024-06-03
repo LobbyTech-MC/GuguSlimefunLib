@@ -1,10 +1,9 @@
 package me.ddggdd135.guguslimefunlib.utils;
 
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class PotionUtils {
     public static PotionEffect parse(String potionEffect) {

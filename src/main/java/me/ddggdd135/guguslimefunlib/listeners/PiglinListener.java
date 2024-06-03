@@ -2,6 +2,8 @@ package me.ddggdd135.guguslimefunlib.listeners;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import me.ddggdd135.guguslimefunlib.items.GuguSlimefunItem;
 import org.bukkit.entity.Piglin;
 import org.bukkit.event.EventHandler;
@@ -9,14 +11,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
 public class PiglinListener implements Listener {
     @EventHandler
     public void onPiglinDropItem(EntityDropItemEvent e) {
         if (e.getEntity() instanceof Piglin) {
-            List<ItemStack> drops = Slimefun.getRegistry().getEnabledSlimefunItems().stream().map(SlimefunItem::getItem).toList();
+            List<ItemStack> drops = Slimefun.getRegistry().getEnabledSlimefunItems().stream()
+                    .map(SlimefunItem::getItem)
+                    .toList();
 
             /*
              * NOTE: Getting a new random number each iteration because multiple items could have the same

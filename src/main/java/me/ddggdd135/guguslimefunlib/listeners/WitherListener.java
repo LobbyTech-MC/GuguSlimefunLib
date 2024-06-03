@@ -20,7 +20,8 @@ public class WitherListener implements Listener {
             var item = blockData == null ? null : SlimefunItem.getById(blockData.getSfId());
 
             // Hardened Glass is excluded from here
-            if (item instanceof GuguSlimefunItem guguSlimefunItem && guguSlimefunItem.isAntiWither()
+            if (item instanceof GuguSlimefunItem guguSlimefunItem
+                    && guguSlimefunItem.isAntiWither()
                     && !item.getId().equals(SlimefunItems.HARDENED_GLASS.getItemId())) {
                 e.setCancelled(true);
             }

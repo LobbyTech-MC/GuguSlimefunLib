@@ -10,13 +10,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public class ItemGroupButton extends SubItemGroup {
     private final String[] actions;
 
-    public ItemGroupButton(
-            NamespacedKey key, NestedItemGroup parent, ItemStack item, int tier, String... actions) {
+    public ItemGroupButton(NamespacedKey key, NestedItemGroup parent, ItemStack item, int tier, String... actions) {
         super(key, parent, item, tier);
 
         this.actions = actions;
@@ -26,7 +24,9 @@ public class ItemGroupButton extends SubItemGroup {
         if (actions != null) {
             for (String action : actions) {
                 if (action.split(" ").length < 2) {
-                    Bukkit.getConsoleSender().sendMessage(org.bukkit.ChatColor.YELLOW + "在" + getKey().getKey() + "物品组按钮中发现未知的操作格式: " + action);
+                    Bukkit.getConsoleSender()
+                            .sendMessage(org.bukkit.ChatColor.YELLOW + "在" + getKey().getKey() + "物品组按钮中发现未知的操作格式: "
+                                    + action);
                     continue;
                 }
 
@@ -47,7 +47,9 @@ public class ItemGroupButton extends SubItemGroup {
                     case "console" -> {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), content.replaceAll("%player%", p.getName()));
                     }
-                    default -> Bukkit.getConsoleSender().sendMessage( org.bukkit.ChatColor.YELLOW + getKey().getKey() + "物品组按钮中发现未知的操作类型: " + action);
+                    default -> Bukkit.getConsoleSender()
+                            .sendMessage(
+                                    org.bukkit.ChatColor.YELLOW + getKey().getKey() + "物品组按钮中发现未知的操作类型: " + action);
                 }
             }
         }

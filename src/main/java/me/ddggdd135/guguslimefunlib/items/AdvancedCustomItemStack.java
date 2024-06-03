@@ -4,6 +4,10 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.skins.PlayerHead;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.skins.PlayerSkin;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+import javax.annotation.Nonnull;
 import me.ddggdd135.guguslimefunlib.libraries.Colors.CMIChatColor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
@@ -16,11 +20,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class AdvancedCustomItemStack extends CustomItemStack {
     public AdvancedCustomItemStack(ItemStack item) {
@@ -81,6 +80,7 @@ public class AdvancedCustomItemStack extends CustomItemStack {
             meta.setLore(Arrays.stream(CMIChatColor.translate(lore)).toList());
         });
     }
+
     @Nonnull
     public static AdvancedCustomItemStack fromBase64(String base64, String name, String... lore) {
         PlayerSkin skin = PlayerSkin.fromBase64(base64);
@@ -89,6 +89,7 @@ public class AdvancedCustomItemStack extends CustomItemStack {
             meta.setLore(Arrays.stream(CMIChatColor.translate(lore)).toList());
         });
     }
+
     @Nonnull
     public static AdvancedCustomItemStack fromURL(String url, String name, String... lore) {
         PlayerSkin skin = PlayerSkin.fromURL(url);
@@ -97,12 +98,14 @@ public class AdvancedCustomItemStack extends CustomItemStack {
             meta.setLore(Arrays.stream(CMIChatColor.translate(lore)).toList());
         });
     }
+
     public AdvancedCustomItemStack doGlow() {
         addUnsafeEnchantment(Enchantment.LUCK, 1);
         addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
         return this;
     }
+
     public AdvancedCustomItemStack setCustomModelData(int modelId) {
         ItemMeta meta = getItemMeta();
         meta.setCustomModelData(modelId);
@@ -110,6 +113,7 @@ public class AdvancedCustomItemStack extends CustomItemStack {
 
         return this;
     }
+
     @Nonnull
     public AdvancedCustomItemStack asQuantity(int count) {
         AdvancedCustomItemStack itemStack = new AdvancedCustomItemStack(this);
@@ -150,7 +154,8 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     public static AdvancedCustomItemStack fromSlimefunItem(String sfId, String... lore) {
         SlimefunItem sfItem = SlimefunItem.getById(sfId);
         if (sfItem != null) {
-            return new AdvancedCustomItemStack(sfItem.getItem().clone(), Arrays.stream(lore).toList());
+            return new AdvancedCustomItemStack(
+                    sfItem.getItem().clone(), Arrays.stream(lore).toList());
         }
         throw new RuntimeException("无法找到" + sfId);
     }
@@ -160,8 +165,8 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     }
 
     public static String makeChanceLore(EntityType entityType, int chance) {
-        String translate = PlainComponentSerializer.plain()
-                .serialize(Component.translatable(entityType.translationKey()));
+        String translate =
+                PlainComponentSerializer.plain().serialize(Component.translatable(entityType.translationKey()));
         return CMIChatColor.translate("&a击杀 ")
                 .concat(translate)
                 .concat(" ")

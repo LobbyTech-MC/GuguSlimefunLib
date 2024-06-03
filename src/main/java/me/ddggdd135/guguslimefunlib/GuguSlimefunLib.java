@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 public final class GuguSlimefunLib extends JavaPlugin implements SlimefunAddon {
     @Getter
     private static GuguSlimefunLib instance;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -30,16 +31,13 @@ public final class GuguSlimefunLib extends JavaPlugin implements SlimefunAddon {
         instance = null;
     }
 
-    @NotNull
-    @Override
+    @NotNull @Override
     public JavaPlugin getJavaPlugin() {
         return this;
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public String getBugTrackerURL() {
         return null;
     }
-
 }

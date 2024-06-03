@@ -1,14 +1,12 @@
 package me.ddggdd135.guguslimefunlib.items;
 
-import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -19,12 +17,15 @@ public class SupplyInfo {
     private Map<Biome, Integer> netherSupply = new HashMap<>();
     private int defaultTheEndSupply = 0;
     private Map<Biome, Integer> theEndSupply = new HashMap<>();
+
     public void addNormalSupply(Biome biome, int count) {
         normalSupply.put(biome, count);
     }
+
     public void addNetherSupply(Biome biome, int count) {
         netherSupply.put(biome, count);
     }
+
     public void addTheEndSupply(Biome biome, int count) {
         theEndSupply.put(biome, count);
     }

@@ -9,7 +9,12 @@ import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.Nullable;
 
 public class GuguSlimefunArmorPiece extends SlimefunArmorPiece {
-    public GuguSlimefunArmorPiece(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, @Nullable PotionEffect[] effects) {
+    public GuguSlimefunArmorPiece(
+            ItemGroup itemGroup,
+            SlimefunItemStack item,
+            RecipeType recipeType,
+            ItemStack[] recipe,
+            @Nullable PotionEffect[] effects) {
         super(itemGroup, item, recipeType, recipe, effects);
     }
 }

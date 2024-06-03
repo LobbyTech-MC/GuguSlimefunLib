@@ -8,12 +8,11 @@ import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import java.io.File;
+import javax.script.ScriptException;
 import org.graalvm.polyglot.Context;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.script.ScriptException;
-import java.io.File;
 
 public class JavaScriptEval extends ScriptEval {
 
@@ -64,8 +63,7 @@ public class JavaScriptEval extends ScriptEval {
         }
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public Object evalFunction(String funName, Object... args) {
         if (getFileContext() == null || getFileContext().isBlank()) {
             contextInit();
@@ -83,10 +81,7 @@ public class JavaScriptEval extends ScriptEval {
     }
 
     private void reSetup() {
-        jsEngine = GraalJSScriptEngine.create(
-                null,
-                Context.newBuilder("js")
-                        .allowAllAccess(true));
+        jsEngine = GraalJSScriptEngine.create(null, Context.newBuilder("js").allowAllAccess(true));
 
         advancedSetup();
     }

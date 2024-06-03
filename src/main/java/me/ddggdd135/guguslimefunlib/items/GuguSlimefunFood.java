@@ -7,20 +7,26 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemConsumptionHandler;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class GuguSlimefunFood extends GuguSlimefunItem{
+public class GuguSlimefunFood extends GuguSlimefunItem {
     public GuguSlimefunFood(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack... recipe) {
         super(itemGroup, item, recipeType, recipe);
 
         addItemHandler(getItemHandler());
     }
 
-    public GuguSlimefunFood(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, @Nullable ItemStack recipeOutput, ItemStack... recipe) {
+    public GuguSlimefunFood(
+            ItemGroup itemGroup,
+            SlimefunItemStack item,
+            RecipeType recipeType,
+            @Nullable ItemStack recipeOutput,
+            ItemStack... recipe) {
         super(itemGroup, item, recipeType, recipeOutput, recipe);
 
         addItemHandler(getItemHandler());
     }
 
-    protected GuguSlimefunFood(ItemGroup itemGroup, ItemStack item, String id, RecipeType recipeType, ItemStack... recipe) {
+    protected GuguSlimefunFood(
+            ItemGroup itemGroup, ItemStack item, String id, RecipeType recipeType, ItemStack... recipe) {
         super(itemGroup, item, id, recipeType, recipe);
 
         addItemHandler(getItemHandler());

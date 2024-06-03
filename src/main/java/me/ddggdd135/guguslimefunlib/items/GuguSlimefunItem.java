@@ -10,6 +10,10 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import java.util.HashSet;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import me.ddggdd135.guguslimefunlib.script.ScriptEval;
@@ -18,30 +22,31 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Set;
-
 public class GuguSlimefunItem extends SlimefunItem {
     @Getter
     @Setter
     private ScriptEval eval;
+
     @Getter
     @Setter
     private @Nullable RainbowType rainbowType = null;
+
     @Getter
     @Setter
     private boolean antiWither = false;
+
     @Getter
     @Setter
     private int piglinTradeChance = 0;
+
     @Getter
     @Setter
     private @Nullable String dropFrom = null;
+
     @Getter
     @Setter
     private int dropChance = 0;
+
     @Getter
     @Setter
     private int dropAmount = 0;
@@ -49,36 +54,37 @@ public class GuguSlimefunItem extends SlimefunItem {
     private int state = 0;
 
     public static Set<GuguSlimefunItem> allGuguSlimefunItems = new HashSet<>();
+
     public GuguSlimefunItem(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack... recipe) {
         super(itemGroup, item, recipeType, recipe);
 
-        if (item.getType().isBlock() && !(this instanceof NotPlaceable))
-            addItemHandler(createTicker());
+        if (item.getType().isBlock() && !(this instanceof NotPlaceable)) addItemHandler(createTicker());
         addItemHandler((ItemUseHandler) e -> {
-            if (eval != null)
-                eval.evalFunction("onUse", e, this);
+            if (eval != null) eval.evalFunction("onUse", e, this);
         });
     }
 
-    public GuguSlimefunItem(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, @Nullable ItemStack recipeOutput, ItemStack... recipe) {
+    public GuguSlimefunItem(
+            ItemGroup itemGroup,
+            SlimefunItemStack item,
+            RecipeType recipeType,
+            @Nullable ItemStack recipeOutput,
+            ItemStack... recipe) {
         super(itemGroup, item, recipeType, recipe, recipeOutput);
 
-        if (item.getType().isBlock() && !(this instanceof NotPlaceable))
-            addItemHandler(createTicker());
+        if (item.getType().isBlock() && !(this instanceof NotPlaceable)) addItemHandler(createTicker());
         addItemHandler((ItemUseHandler) e -> {
-            if (eval != null)
-                eval.evalFunction("onUse", e, this);
+            if (eval != null) eval.evalFunction("onUse", e, this);
         });
     }
 
-    protected GuguSlimefunItem(ItemGroup itemGroup, ItemStack item, String id, RecipeType recipeType, ItemStack...recipe) {
+    protected GuguSlimefunItem(
+            ItemGroup itemGroup, ItemStack item, String id, RecipeType recipeType, ItemStack... recipe) {
         super(itemGroup, item, id, recipeType, recipe);
 
-        if (item.getType().isBlock() && !(this instanceof NotPlaceable))
-            addItemHandler(createTicker());
+        if (item.getType().isBlock() && !(this instanceof NotPlaceable)) addItemHandler(createTicker());
         addItemHandler((ItemUseHandler) e -> {
-            if (eval != null)
-                eval.evalFunction("onUse", e, this);
+            if (eval != null) eval.evalFunction("onUse", e, this);
         });
     }
 
@@ -114,8 +120,7 @@ public class GuguSlimefunItem extends SlimefunItem {
     @Override
     public void register(@Nonnull SlimefunAddon slimefunAddon) {
         super.register(slimefunAddon);
-        if (this instanceof GEOResource geoResource)
-            geoResource.register();
+        if (this instanceof GEOResource geoResource) geoResource.register();
         allGuguSlimefunItems.add(this);
     }
 }

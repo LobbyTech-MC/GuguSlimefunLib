@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import me.ddggdd135.guguslimefunlib.api.interfaces.InventoryBlock;
+import me.ddggdd135.guguslimefunlib.items.AdvancedCustomItemStack;
 import me.ddggdd135.guguslimefunlib.items.MenuItems;
 import me.ddggdd135.guguslimefunlib.listeners.InventoryListener;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
@@ -46,7 +46,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import me.ddggdd135.guguslimefunlib.items.AdvancedCustomItemStack;
 
 public abstract class AbstractMachineBlock extends TicingBlock
         implements InventoryBlock, EnergyNetComponent, RecipeDisplayItem, MachineProcessHolder<CraftingOperation> {

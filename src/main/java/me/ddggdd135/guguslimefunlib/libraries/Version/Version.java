@@ -1,13 +1,12 @@
 package me.ddggdd135.guguslimefunlib.libraries.Version;
 
-import lombok.Getter;
-import org.bukkit.Bukkit;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import org.bukkit.Bukkit;
 
 public enum Version {
     v1_16_R1,
