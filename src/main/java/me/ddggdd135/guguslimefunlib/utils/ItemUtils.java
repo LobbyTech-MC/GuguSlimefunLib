@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
@@ -148,5 +149,38 @@ public class ItemUtils {
     public static <T extends SlimefunItem> T setRecipeOutput(@Nonnull T item, @Nonnull ItemStack output) {
         item.setRecipeOutput(output);
         return item;
+    }
+
+    public ItemStack[] tryTakeItem(@Nonnull BlockMenu blockMenu, @Nonnull ItemHashMap<Integer> items) {
+        Map<ItemStack, Integer> amounts = ItemUtils.getAmounts(ItemUtils.createItems(items));
+        ItemHashMap<Integer> found = new ItemHashMap<>();
+
+        for (ItemStack itemStack : amounts.keySet()) {
+            int[] outputSlots = blockMenu
+                    .getPreset()
+                    .getSlotsAccessedByItemTransport(blockMenu, ItemTransportFlow.WITHDRAW, itemStack);
+            if (outputSlots == null) continue;
+            for (int slot : outputSlots) {
+                ItemStack item = blockMenu.getItemInSlot(slot);
+                if (item == null || item.getType().isAir()) continue;
+                if (SlimefunUtils.isItemSimilar(item, itemStack, true, false)) {
+                    if (item.getAmount() > amounts.get(itemStack)) {
+                        found.put(itemStack, found.getOrDefault(itemStack, 0) + amounts.get(itemStack));
+                        int rest = item.getAmount() - amounts.get(itemStack);
+                        item.setAmount(rest);
+                        blockMenu.markDirty();
+                        break;
+                    } else {
+                        found.put(itemStack, found.getOrDefault(itemStack, 0) + item.getAmount());
+                        blockMenu.replaceExistingItem(slot, null);
+                        int rest = amounts.get(itemStack) - item.getAmount();
+                        if (rest != 0) amounts.put(itemStack, rest);
+                        else break;
+                    }
+                }
+            }
+        }
+
+        return createItems(found);
     }
 }
