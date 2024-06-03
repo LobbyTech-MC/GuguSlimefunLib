@@ -151,7 +151,7 @@ public class ItemUtils {
         return item;
     }
 
-    public ItemStack[] tryTakeItem(@Nonnull BlockMenu blockMenu, @Nonnull ItemHashMap<Integer> items) {
+    public static ItemStack[] tryTakeItem(@Nonnull BlockMenu blockMenu, @Nonnull ItemHashMap<Integer> items) {
         Map<ItemStack, Integer> amounts = ItemUtils.getAmounts(ItemUtils.createItems(items));
         ItemHashMap<Integer> found = new ItemHashMap<>();
 
