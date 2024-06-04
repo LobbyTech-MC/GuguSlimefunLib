@@ -118,9 +118,4 @@ public class AEMenu extends ChestMenu {
     public boolean hasClickHandler(int slot) {
         return this.getMenuClickHandler(slot) != null;
     }
-
-    public AEMenu setSize(int size) {
-        addItem(size - 1, null);
-        return this;
-    }
 }
