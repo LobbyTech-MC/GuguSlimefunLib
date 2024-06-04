@@ -1,4 +1,4 @@
-package me.ddggdd135.guguslimefunlib.libraries.Colors;
+package me.ddggdd135.guguslimefunlib.libraries.colors;
 
 import lombok.Getter;
 

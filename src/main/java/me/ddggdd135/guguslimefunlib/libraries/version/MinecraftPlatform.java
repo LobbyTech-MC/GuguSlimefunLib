@@ -1,4 +1,4 @@
-package me.ddggdd135.guguslimefunlib.libraries.Version;
+package me.ddggdd135.guguslimefunlib.libraries.version;
 
 public enum MinecraftPlatform {
     paper,

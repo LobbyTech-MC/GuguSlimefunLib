@@ -1,11 +1,11 @@
-package me.ddggdd135.guguslimefunlib.libraries.Colors;
+package me.ddggdd135.guguslimefunlib.libraries.colors;
 
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
-import me.ddggdd135.guguslimefunlib.libraries.Version.Version;
+import me.ddggdd135.guguslimefunlib.libraries.version.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 

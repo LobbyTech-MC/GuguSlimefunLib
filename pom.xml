@@ -16,64 +16,72 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.12.1</version>
-        <configuration>
-          <source>16</source>
-          <target>16</target>
-        </configuration>
-      </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>3.5.1</version>
-            <configuration>
-                <relocations>
-                    <relocation>
-                        <pattern>de.tr7zw.changeme.nbtapi</pattern>
-                        <shadedPattern>me.ddggdd135.libraries.nbtapi</shadedPattern>
-                    </relocation>
-                </relocations>
-            </configuration>
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <goals>
-                <goal>shade</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-            <groupId>com.diffplug.spotless</groupId>
-            <artifactId>spotless-maven-plugin</artifactId>
-            <version>2.43.0</version>
-            <configuration>
-                <java>
-                    <palantirJavaFormat>
-                        <version>2.38.0</version>
-                        <style>PALANTIR</style>
-                    </palantirJavaFormat>
+    <build>
+        <!-- The default goal for compiling is "clean package" -->
+        <defaultGoal>clean package</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.2</version>
+                <executions>
+                    <execution>
+                        <id>shade</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <shadedPattern>me.ddggdd135.guguslimefunlib.libraries.nbtapi</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.43.0</version>
+                <configuration>
+                    <java>
+                        <palantirJavaFormat>
+                            <version>2.38.0</version>
+                            <style>PALANTIR</style>
+                        </palantirJavaFormat>
 
-                    <removeUnusedImports />
-                    <formatAnnotations />
-                </java>
-            </configuration>
-        </plugin>
-    </plugins>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-  </build>
+                        <removeUnusedImports />
+                        <formatAnnotations />
+                    </java>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 
   <repositories>
+      <repository>
+          <!-- Spigot-API -->
+          <id>spigot-repo</id>
+          <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
+      </repository>
       <repository>
           <id>papermc-repo</id>
           <url>https://repo.papermc.io/repository/maven-public/</url>
@@ -86,6 +94,12 @@
           <id>jitpack.io</id>
           <url>https://jitpack.io</url>
       </repository>
+      <!-- CodeMC -->
+      <repository>
+          <id>codemc-repo</id>
+          <url>https://repo.codemc.org/repository/maven-public/</url>
+          <layout>default</layout>
+      </repository>
       <repository>
           <id>placeholderapi</id>
           <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
@@ -93,10 +107,6 @@
       <repository>
           <id>minebench-repo</id>
           <url>https://repo.minebench.de/</url>
-      </repository>
-      <repository>
-          <id>codemc-repo</id>
-          <url>https://repo.codemc.org/repository/maven-public/</url>
       </repository>
   </repositories>
 
@@ -139,8 +149,8 @@
       </dependency>
       <dependency>
           <groupId>de.tr7zw</groupId>
-          <artifactId>item-nbt-api-plugin</artifactId>
-          <version>2.12.4</version>
+          <artifactId>item-nbt-api</artifactId>
+          <version>2.12.2</version>
       </dependency>
   </dependencies>
 </project>

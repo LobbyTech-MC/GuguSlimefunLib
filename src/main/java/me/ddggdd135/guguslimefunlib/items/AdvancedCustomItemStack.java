@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
-import me.ddggdd135.guguslimefunlib.libraries.Colors.CMIChatColor;
+import me.ddggdd135.guguslimefunlib.libraries.colors.CMIChatColor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.bukkit.Color;

@@ -3,14 +3,14 @@ package me.ddggdd135.guguslimefunlib.api;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ItemHashMap<T> implements Map<ItemStack, T> {
-    private HashMap<ItemTemplate, T> hashMap = new HashMap<>();
+    private final HashMap<ItemTemplate, T> hashMap = new HashMap<>();
 
-    public ItemHashMap(@NonNull Map<ItemStack, T> items) {
+    public ItemHashMap(@Nonnull Map<ItemStack, T> items) {
         putAll(items);
     }
 
@@ -43,7 +43,8 @@ public class ItemHashMap<T> implements Map<ItemStack, T> {
         throw new IllegalArgumentException();
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public T put(ItemStack key, T value) {
         return hashMap.put(new ItemTemplate(key), value);
     }
@@ -55,7 +56,7 @@ public class ItemHashMap<T> implements Map<ItemStack, T> {
     }
 
     @Override
-    public void putAll(@NotNull Map<? extends ItemStack, ? extends T> m) {
+    public void putAll(@Nonnull Map<? extends ItemStack, ? extends T> m) {
         m.forEach((k, v) -> put(k, v));
     }
 
@@ -64,17 +65,17 @@ public class ItemHashMap<T> implements Map<ItemStack, T> {
         hashMap.clear();
     }
 
-    @NotNull @Override
+    @Nonnull @Override
     public Set<ItemStack> keySet() {
         return hashMap.keySet().stream().map(x -> x.getHandle()).collect(Collectors.toSet());
     }
 
-    @NotNull @Override
+    @Nonnull @Override
     public Collection<T> values() {
         return hashMap.values();
     }
 
-    @NotNull @Override
+    @Nonnull @Override
     public Set<Entry<ItemStack, T>> entrySet() {
         return hashMap.entrySet().stream()
                 .map(x -> new Entry<ItemStack, T>() {

@@ -2,7 +2,7 @@ package me.ddggdd135.guguslimefunlib.items;
 
 import io.github.thebusybiscuit.slimefun4.api.items.groups.NestedItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.groups.SubItemGroup;
-import me.ddggdd135.guguslimefunlib.libraries.Colors.CMIChatColor;
+import me.ddggdd135.guguslimefunlib.libraries.colors.CMIChatColor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
