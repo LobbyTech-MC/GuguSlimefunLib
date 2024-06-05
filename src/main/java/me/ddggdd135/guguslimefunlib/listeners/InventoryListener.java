@@ -62,6 +62,7 @@ public class InventoryListener implements Listener {
 
         List<MachineRecipe> recipes = machineBlock.getMachineRecipes();
         pdc = clickedItem.getItemMeta().getPersistentDataContainer();
+        if (!pdc.has(INDEX_KEY, PersistentDataType.INTEGER)) return;
         int index = pdc.get(INDEX_KEY, PersistentDataType.INTEGER);
 
         menu.addMenuOpeningHandler(pl -> pl.playSound(pl.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1));
