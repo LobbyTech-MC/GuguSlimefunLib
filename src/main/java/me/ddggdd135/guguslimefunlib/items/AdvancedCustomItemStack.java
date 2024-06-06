@@ -4,6 +4,10 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.skins.PlayerHead;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.skins.PlayerSkin;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+import javax.annotation.Nonnull;
 import me.ddggdd135.guguslimefunlib.libraries.colors.CMIChatColor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
@@ -17,11 +21,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
 
 @SerializableAs("ItemStack")
 public class AdvancedCustomItemStack extends CustomItemStack {
@@ -177,6 +176,7 @@ public class AdvancedCustomItemStack extends CustomItemStack {
                 .concat(CMIChatColor.translate("&b" + chance + "%"))
                 .concat(CMIChatColor.translate("的概率掉落"));
     }
+
     @Override
     public @Nonnull AdvancedCustomItemStack clone() {
         return (AdvancedCustomItemStack) super.clone();

@@ -3,6 +3,12 @@ package me.ddggdd135.guguslimefunlib.api;
 import com.google.common.base.Preconditions;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import io.papermc.paper.inventory.ItemRarity;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEventSource;
@@ -15,13 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 
 public class ItemTemplate
         implements Cloneable, HoverEventSource<HoverEvent.ShowItem>, net.kyori.adventure.translation.Translatable {

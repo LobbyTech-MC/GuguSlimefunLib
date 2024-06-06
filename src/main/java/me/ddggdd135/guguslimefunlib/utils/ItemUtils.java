@@ -2,6 +2,10 @@ package me.ddggdd135.guguslimefunlib.utils;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nonnull;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.block.Block;
@@ -12,11 +16,6 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class ItemUtils {
     @Nonnull
@@ -151,7 +150,8 @@ public class ItemUtils {
         return item;
     }
 
-    public static ItemStack[] tryTakeItem(@Nonnull BlockMenu blockMenu, @Nonnull ItemHashMap<Integer> items, int... slots) {
+    public static ItemStack[] tryTakeItem(
+            @Nonnull BlockMenu blockMenu, @Nonnull ItemHashMap<Integer> items, int... slots) {
         ItemHashMap<Integer> amounts = new ItemHashMap<>(items);
         ItemHashMap<Integer> found = new ItemHashMap<>();
 

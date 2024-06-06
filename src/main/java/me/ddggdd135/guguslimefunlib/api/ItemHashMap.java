@@ -2,10 +2,9 @@ package me.ddggdd135.guguslimefunlib.api;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import org.bukkit.inventory.ItemStack;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.bukkit.inventory.ItemStack;
 
 public class ItemHashMap<T> implements Map<ItemStack, T> {
     private final HashMap<ItemTemplate, T> hashMap = new HashMap<>();
@@ -43,8 +42,7 @@ public class ItemHashMap<T> implements Map<ItemStack, T> {
         throw new IllegalArgumentException();
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public T put(ItemStack key, T value) {
         return hashMap.put(new ItemTemplate(key), value);
     }
@@ -65,17 +63,20 @@ public class ItemHashMap<T> implements Map<ItemStack, T> {
         hashMap.clear();
     }
 
-    @Nonnull @Override
+    @Nonnull
+    @Override
     public Set<ItemStack> keySet() {
         return hashMap.keySet().stream().map(x -> x.getHandle()).collect(Collectors.toSet());
     }
 
-    @Nonnull @Override
+    @Nonnull
+    @Override
     public Collection<T> values() {
         return hashMap.values();
     }
 
-    @Nonnull @Override
+    @Nonnull
+    @Override
     public Set<Entry<ItemStack, T>> entrySet() {
         return hashMap.entrySet().stream()
                 .map(x -> new Entry<ItemStack, T>() {
