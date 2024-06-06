@@ -1,6 +1,11 @@
 package me.ddggdd135.guguslimefunlib;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.UUID;
 import lombok.Getter;
 import me.ddggdd135.guguslimefunlib.listeners.BlockListener;
 import me.ddggdd135.guguslimefunlib.listeners.InventoryListener;
@@ -12,15 +17,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.UUID;
-
 public final class GuguSlimefunLib extends JavaPlugin implements SlimefunAddon {
     @Getter
     private static GuguSlimefunLib instance;
+
     @Getter
     private static UUID serverUUID;
 
@@ -38,6 +38,8 @@ public final class GuguSlimefunLib extends JavaPlugin implements SlimefunAddon {
         } else {
             serverUUID = UUID.randomUUID();
             try {
+                getDataFolder().mkdirs();
+                uuidFile.createNewFile();
                 Files.write(Path.of(uuidFile.getPath()), UUIDUtils.toByteArray(serverUUID));
             } catch (IOException e) {
                 throw new RuntimeException(e);
