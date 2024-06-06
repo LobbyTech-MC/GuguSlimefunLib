@@ -6,19 +6,43 @@ import me.ddggdd135.guguslimefunlib.listeners.BlockListener;
 import me.ddggdd135.guguslimefunlib.listeners.InventoryListener;
 import me.ddggdd135.guguslimefunlib.listeners.PiglinListener;
 import me.ddggdd135.guguslimefunlib.listeners.WitherListener;
+import me.ddggdd135.guguslimefunlib.utils.UUIDUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.UUID;
+
 public final class GuguSlimefunLib extends JavaPlugin implements SlimefunAddon {
     @Getter
     private static GuguSlimefunLib instance;
+    @Getter
+    private static UUID serverUUID;
 
     @Override
     public void onEnable() {
         instance = this;
         // Plugin startup logic
+        File uuidFile = new File(getDataFolder(), "server-uuid");
+        if (uuidFile.exists()) {
+            try {
+                serverUUID = UUID.nameUUIDFromBytes(Files.readAllBytes(Path.of(uuidFile.getPath())));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            serverUUID = UUID.randomUUID();
+            try {
+                Files.write(Path.of(uuidFile.getPath()), UUIDUtils.toByteArray(serverUUID));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         Bukkit.getServer().getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PiglinListener(), this);
