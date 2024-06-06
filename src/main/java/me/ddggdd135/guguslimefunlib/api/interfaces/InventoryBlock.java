@@ -36,7 +36,7 @@ public interface InventoryBlock {
         if (player.hasPermission("slimefun.inventory.bypass")) {
             return true;
         } else {
-            return item.canUse(player, false)
+            return item.canUse(player, true)
                     && Slimefun.getProtectionManager()
                             .hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
         }
