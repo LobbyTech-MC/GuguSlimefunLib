@@ -1,7 +1,5 @@
 package me.ddggdd135.guguslimefunlib.api;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import me.ddggdd135.guguslimefunlib.script.ScriptEval;
@@ -9,6 +7,9 @@ import me.ddggdd135.guguslimefunlib.utils.ReflectionUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MachineMenu extends ChestMenu {
     @Getter
@@ -81,6 +82,30 @@ public class MachineMenu extends ChestMenu {
         });
         return this;
     }
+
+    @Override
+    public MachineMenu addMenuOpeningHandler(MenuOpeningHandler handler) {
+        super.addMenuOpeningHandler(player -> {
+            if (eval != null) {
+                eval.evalFunction("onOpen", player);
+            }
+
+            handler.onOpen(player);
+        });
+        return this;
+    }
+    @Override
+    public MachineMenu addMenuCloseHandler(MenuCloseHandler handler) {
+        super.addMenuCloseHandler(player -> {
+            if (eval != null) {
+                eval.evalFunction("onClose", player);
+            }
+
+            handler.onClose(player);
+        });
+        return this;
+    }
+
 
     public MenuClickHandler getMenuClickHandlerDirectly(int slot) {
         return sourceHandlers.get(slot);
