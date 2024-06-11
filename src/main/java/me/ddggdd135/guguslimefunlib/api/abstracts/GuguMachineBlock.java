@@ -24,6 +24,7 @@ import me.ddggdd135.guguslimefunlib.script.ScriptEval;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
+import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
@@ -137,6 +138,12 @@ public class GuguMachineBlock extends TickingBlock
             @Override
             public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block block) {
                 GuguMachineBlock.this.newInstance(menu, block);
+            }
+
+            @Override
+            public int[] getSlotsAccessedByItemTransport(ItemTransportFlow itemTransportFlow) {
+                if (itemTransportFlow == ItemTransportFlow.INSERT) return getInputSlots();
+                else return getOutputSlots();
             }
         };
     }
