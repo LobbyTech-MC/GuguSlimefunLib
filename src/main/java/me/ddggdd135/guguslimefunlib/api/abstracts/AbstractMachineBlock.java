@@ -47,7 +47,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractMachineBlock extends TicingBlock
+public abstract class AbstractMachineBlock extends TickingBlock
         implements InventoryBlock, EnergyNetComponent, RecipeDisplayItem, MachineProcessHolder<CraftingOperation> {
 
     protected final List<MachineRecipe> recipes = new ArrayList<>();
