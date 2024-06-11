@@ -53,7 +53,7 @@ public class GuguMachineBlock extends TickingBlock
             SlimefunItemStack item,
             RecipeType recipeType,
             ItemStack[] recipe,
-            @Nonnull MachineMenu machineMenu,
+            @Nullable MachineMenu machineMenu,
             @Nullable ScriptEval eval,
             int workingSlot) {
         super(itemGroup, item, recipeType, recipe);
@@ -79,6 +79,7 @@ public class GuguMachineBlock extends TickingBlock
             });
         }
 
+        if (machineMenu == null) return;
         if (workingSlot >= 0 && workingSlot < 54) {
             ChestMenu.MenuClickHandler menuClickHandler = machineMenu.getMenuClickHandlerDirectly(workingSlot);
             machineMenu.addMenuClickHandler(workingSlot, (player, slot, cursor, clickAction) -> {
