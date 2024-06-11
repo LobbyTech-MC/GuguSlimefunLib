@@ -54,7 +54,7 @@ public class GuguMachineBlock extends TickingBlock
             ItemStack[] recipe,
             @Nonnull MachineMenu machineMenu,
             @Nullable ScriptEval eval,
-            int... workingSlots) {
+            int workingSlot) {
         super(itemGroup, item, recipeType, recipe);
         this.eval = eval;
         this.slimefunItemStack = item;
@@ -78,20 +78,18 @@ public class GuguMachineBlock extends TickingBlock
             });
         }
 
-        for (int workSlot : workingSlots) {
-            if (workSlot > -1 && workSlot < 54) {
-                ChestMenu.MenuClickHandler menuClickHandler = machineMenu.getMenuClickHandlerDirectly(workSlot);
-                machineMenu.addMenuClickHandler(workSlot, (player, slot, cursor, clickAction) -> {
-                    if (eval != null) {
-                        working = true;
-                        eval.addThing("working", true);
-                    }
+        if (workingSlot >= 0 && workingSlot < 54) {
+            ChestMenu.MenuClickHandler menuClickHandler = machineMenu.getMenuClickHandlerDirectly(workingSlot);
+            machineMenu.addMenuClickHandler(workingSlot, (player, slot, cursor, clickAction) -> {
+                if (eval != null) {
+                    working = true;
+                    eval.addThing("working", true);
+                }
 
-                    return menuClickHandler.onClick(player, slot, cursor, clickAction);
-                });
-            }
-            this.machineProcessor.setProgressBar(machineMenu.getProgressBar());
+                return menuClickHandler.onClick(player, slot, cursor, clickAction);
+            });
         }
+        this.machineProcessor.setProgressBar(machineMenu.getProgressBar());
 
         createPreset(this);
     }
