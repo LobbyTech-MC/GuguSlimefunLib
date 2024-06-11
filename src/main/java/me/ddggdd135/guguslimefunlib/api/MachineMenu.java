@@ -27,7 +27,7 @@ public class MachineMenu extends ChestMenu {
     @Setter
     private ItemStack progressBar;
 
-    private Map<Integer, MenuClickHandler> sourceHandlers = new HashMap<>();
+    private final Map<Integer, MenuClickHandler> sourceHandlers = new HashMap<>();
 
     public MachineMenu(BlockMenuPreset preset) {
         super(preset.getTitle());
@@ -89,5 +89,15 @@ public class MachineMenu extends ChestMenu {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             return "";
         }
+    }
+
+    public MachineMenu addItem(ItemStack item, int... slots) {
+        for(int slot : slots) addItem(slot, item);
+        return this;
+    }
+
+    public MachineMenu addItem(ItemStack item, MenuClickHandler clickHandler, int... slots) {
+        for(int slot : slots) addItem(slot, item, clickHandler);
+        return this;
     }
 }
