@@ -26,11 +26,14 @@ public class MachineMenu extends ChestMenu {
     @Getter
     @Setter
     private ItemStack progressBar;
+    @Getter
+    @Setter
+    private int progressSlot = 22;
 
     private final Map<Integer, MenuClickHandler> sourceHandlers = new HashMap<>();
 
-    public MachineMenu(BlockMenuPreset preset) {
-        super(preset.getTitle());
+    public MachineMenu(String title, BlockMenuPreset preset) {
+        super(title);
         setPlayerInventoryClickable(true);
 
         if (preset.isSizeAutomaticallyInferred()) {
