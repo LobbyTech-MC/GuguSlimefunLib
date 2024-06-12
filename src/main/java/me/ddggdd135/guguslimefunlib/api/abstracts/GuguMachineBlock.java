@@ -7,8 +7,10 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineProcessHolder;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.machines.MachineProcessor;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
@@ -25,21 +27,22 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public class GuguMachineBlock extends TickingBlock
         implements InventoryBlock, MachineProcessHolder<CustomCraftingOperation> {
     @Getter
-    private ScriptEval eval;
+    @Nullable private ScriptEval eval;
 
     @Getter
     private SlimefunItemStack slimefunItemStack;
 
     @Getter
-    private MachineMenu machineMenu;
+    @Nullable private MachineMenu machineMenu;
 
     @Getter
     private MachineProcessor<CustomCraftingOperation> machineProcessor;
@@ -73,11 +76,30 @@ public class GuguMachineBlock extends TickingBlock
 
             addItemHandler(new BlockPlaceHandler(false) {
                 @Override
-                public void onPlayerPlace(@NotNull BlockPlaceEvent e) {
+                public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                     GuguMachineBlock.this.eval.evalFunction("onPlace", e);
                 }
             });
         }
+        addItemHandler(new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(
+                    @Nonnull BlockBreakEvent blockBreakEvent,
+                    @Nonnull ItemStack itemStack,
+                    @Nonnull List<ItemStack> drops) {
+                Block block = blockBreakEvent.getBlock();
+                Location loc = block.getLocation();
+                BlockMenu blockMenu = StorageCacheUtils.getMenu(loc);
+                if (blockMenu != null) {
+                    blockMenu.dropItems(loc, getInputSlots());
+                    blockMenu.dropItems(loc, getOutputSlots());
+                }
+
+                if (eval != null) {
+                    eval.evalFunction("onBreak", blockBreakEvent, itemStack, drops);
+                }
+            }
+        });
 
         if (machineMenu == null) return;
         if (workingSlot >= 0 && workingSlot < 54) {
@@ -114,12 +136,14 @@ public class GuguMachineBlock extends TickingBlock
 
     @Override
     public int[] getInputSlots() {
-        return machineMenu.getInputSlot();
+        if (machineMenu != null) return machineMenu.getInputSlot();
+        return new int[] {19, 20};
     }
 
     @Override
     public int[] getOutputSlots() {
-        return machineMenu.getOutputSlot();
+        if (machineMenu != null) return machineMenu.getOutputSlot();
+        return new int[] {24, 25};
     }
 
     @Override
@@ -138,6 +162,7 @@ public class GuguMachineBlock extends TickingBlock
 
             @Override
             public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block block) {
+                super.newInstance(menu, block);
                 GuguMachineBlock.this.newInstance(menu, block);
             }
 
