@@ -111,7 +111,7 @@ public class ItemTemplate
             if (nbt_handle == null) nbt_handle = new NBTItem(handle, true);
             return handle.getType() == stack.getType()
                     && stack.getAmount() != 0
-                    && new NBTItem(stack, true).equals(nbt_handle);
+                    && new NBTItem(stack, true).toString().equals(nbt_handle.toString());
         }
     }
 
@@ -123,10 +123,11 @@ public class ItemTemplate
     public int hashCode() {
         if (nbt_handle == null && !isAir) {
             nbt_handle = new NBTItem(handle, true);
-            return nbt_handle.hashCode() + 31 * (isAir ? 32 : 255)
-                    ^ handle.getType().hashCode();
+            return nbt_handle.hashCode() + 31 * handle.getType().hashCode();
+        } else if (nbt_handle != null && !isAir) {
+            return nbt_handle.hashCode() + 31 * handle.getType().hashCode();
         } else {
-            return 200 ^ 255;
+            return 0;
         }
     }
 

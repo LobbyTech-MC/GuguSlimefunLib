@@ -5,12 +5,11 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.generators.SolarGenerator;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
-
-import javax.annotation.Nonnull;
 
 public class GuguSolarGenerator extends SolarGenerator {
     @Getter
