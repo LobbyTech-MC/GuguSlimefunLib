@@ -6,7 +6,3 @@ authors:
   - JWJUN233233
 depend:
   - Slimefun
-libraries:
-  - org.graalvm.js:js-scriptengine:23.0.2
-  - org.graalvm.js:js:23.0.2
-  - org.graalvm.truffle:truffle-api:23.0.2

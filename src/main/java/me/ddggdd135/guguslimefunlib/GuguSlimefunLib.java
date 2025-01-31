@@ -7,10 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 import lombok.Getter;
-import me.ddggdd135.guguslimefunlib.listeners.BlockListener;
 import me.ddggdd135.guguslimefunlib.listeners.InventoryListener;
-import me.ddggdd135.guguslimefunlib.listeners.PiglinListener;
-import me.ddggdd135.guguslimefunlib.listeners.WitherListener;
 import me.ddggdd135.guguslimefunlib.utils.UUIDUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,10 +42,8 @@ public final class GuguSlimefunLib extends JavaPlugin implements SlimefunAddon {
                 throw new RuntimeException(e);
             }
         }
-        Bukkit.getServer().getPluginManager().registerEvents(new BlockListener(), this);
+
         Bukkit.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new PiglinListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new WitherListener(), this);
     }
 
     @Override
