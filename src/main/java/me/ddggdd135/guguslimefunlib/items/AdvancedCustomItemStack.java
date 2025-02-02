@@ -9,15 +9,12 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import me.ddggdd135.guguslimefunlib.libraries.colors.CMIChatColor;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -164,21 +161,5 @@ public class AdvancedCustomItemStack extends CustomItemStack {
 
     public static AdvancedCustomItemStack fromLore(ItemStack itemStack, String... lore) {
         return new AdvancedCustomItemStack(itemStack, Arrays.stream(lore).toList());
-    }
-
-    public static String makeChanceLore(EntityType entityType, int chance) {
-        String translate =
-                PlainComponentSerializer.plain().serialize(Component.translatable(entityType.translationKey()));
-        return CMIChatColor.translate("&a击杀 ")
-                .concat(translate)
-                .concat(" ")
-                .concat(CMIChatColor.translate("&a时会有"))
-                .concat(CMIChatColor.translate("&b" + chance + "%"))
-                .concat(CMIChatColor.translate("的概率掉落"));
-    }
-
-    @Override
-    public @Nonnull AdvancedCustomItemStack clone() {
-        return (AdvancedCustomItemStack) super.clone();
     }
 }
