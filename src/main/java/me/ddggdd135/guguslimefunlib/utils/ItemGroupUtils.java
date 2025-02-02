@@ -5,8 +5,6 @@ import io.github.thebusybiscuit.slimefun4.api.items.groups.NestedItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.groups.SubItemGroup;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import javax.annotation.Nonnull;
-import me.ddggdd135.guguslimefunlib.items.AdvancedNestedItemGroup;
-import me.ddggdd135.guguslimefunlib.items.ItemGroupButton;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -29,16 +27,5 @@ public class ItemGroupUtils {
         }
 
         return new SubItemGroup(namespacedKey, nestedItemGroup, itemStack, tier);
-    }
-
-    @Nonnull
-    public static ItemGroupButton createButton(
-            NamespacedKey parent, NamespacedKey namespacedKey, ItemStack itemStack, int tier, String... actions) {
-        ItemGroup parentItemGroup = findItemGroup(parent);
-        if (!(parentItemGroup instanceof AdvancedNestedItemGroup nestedItemGroup)) {
-            throw new RuntimeException("父物品组不是AdvancedNestedItemGroup");
-        }
-
-        return new ItemGroupButton(namespacedKey, nestedItemGroup, itemStack, tier, actions);
     }
 }
