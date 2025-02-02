@@ -80,10 +80,6 @@ public class AdvancedNestedItemGroup extends NestedItemGroup {
             if (itemGroup.isVisibleInNested(p)) {
                 menu.addItem(index, itemGroup.getItem(p));
                 menu.addMenuClickHandler(index, (pl, slot, item, action) -> {
-                    if (itemGroup instanceof ItemGroupButton button) {
-                        button.run(p);
-                        return false;
-                    }
                     SlimefunGuide.openItemGroup(profile, itemGroup, mode, 1);
                     return false;
                 });

@@ -9,6 +9,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEventSource;
@@ -18,9 +20,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Range;
 
 public class ItemTemplate
         implements Cloneable, HoverEventSource<HoverEvent.ShowItem>, net.kyori.adventure.translation.Translatable {
@@ -33,7 +32,7 @@ public class ItemTemplate
         isAir = true;
     }
 
-    public ItemTemplate(@NotNull Material type) {
+    public ItemTemplate(@Nonnull Material type) {
         handle = new ItemStack(type, 1);
         if (type.isAir()) {
             handle.setType(Material.STONE);
@@ -42,7 +41,7 @@ public class ItemTemplate
         if (!isAir) nbt_handle = new NBTItem(handle, true);
     }
 
-    public ItemTemplate(@NotNull ItemStack stack) throws IllegalArgumentException {
+    public ItemTemplate(@Nonnull ItemStack stack) throws IllegalArgumentException {
         Preconditions.checkArgument(stack != null, "Cannot copy null stack");
         handle = stack.clone();
         if (stack.getType().isAir()) {
@@ -55,11 +54,11 @@ public class ItemTemplate
         }
     }
 
-    public @NotNull Material getType() {
+    public @Nonnull Material getType() {
         return handle.getType();
     }
 
-    public void setType(@NotNull Material type) {
+    public void setType(@Nonnull Material type) {
         Preconditions.checkArgument(type != null, "Material cannot be null");
         if (type.isAir()) isAir = true;
         else isAir = false;
@@ -116,7 +115,7 @@ public class ItemTemplate
     }
 
     @Override
-    public @NotNull ItemTemplate clone() {
+    public @Nonnull ItemTemplate clone() {
         return new ItemTemplate(handle);
     }
 
@@ -131,47 +130,47 @@ public class ItemTemplate
         }
     }
 
-    public boolean containsEnchantment(@NotNull Enchantment ench) {
+    public boolean containsEnchantment(@Nonnull Enchantment ench) {
         return handle.containsEnchantment(ench);
     }
 
-    public int getEnchantmentLevel(@NotNull Enchantment ench) {
+    public int getEnchantmentLevel(@Nonnull Enchantment ench) {
         return handle.getEnchantmentLevel(ench);
     }
 
-    public @NotNull Map<Enchantment, Integer> getEnchantments() {
+    public @Nonnull Map<Enchantment, Integer> getEnchantments() {
         return handle.getEnchantments();
     }
 
-    public void addEnchantments(@NotNull Map<Enchantment, Integer> enchantments) {
+    public void addEnchantments(@Nonnull Map<Enchantment, Integer> enchantments) {
         handle.addEnchantments(enchantments);
     }
 
-    public void addEnchantment(@NotNull Enchantment ench, int level) {
+    public void addEnchantment(@Nonnull Enchantment ench, int level) {
         handle.addEnchantment(ench, level);
     }
 
-    public void addUnsafeEnchantments(@NotNull Map<Enchantment, Integer> enchantments) {
+    public void addUnsafeEnchantments(@Nonnull Map<Enchantment, Integer> enchantments) {
         handle.addUnsafeEnchantments(enchantments);
     }
 
-    public void addUnsafeEnchantment(@NotNull Enchantment ench, int level) {
+    public void addUnsafeEnchantment(@Nonnull Enchantment ench, int level) {
         handle.addUnsafeEnchantment(ench, level);
     }
 
-    public int removeEnchantment(@NotNull Enchantment ench) {
+    public int removeEnchantment(@Nonnull Enchantment ench) {
         return handle.removeEnchantment(ench);
     }
 
-    public @NotNull Map<String, Object> serialize() {
+    public @Nonnull Map<String, Object> serialize() {
         return handle.serialize();
     }
 
-    public boolean editMeta(@NotNull Consumer<? super ItemMeta> consumer) {
+    public boolean editMeta(@Nonnull Consumer<? super ItemMeta> consumer) {
         return handle.editMeta(consumer);
     }
 
-    public <M extends ItemMeta> boolean editMeta(@NotNull Class<M> metaClass, @NotNull Consumer<? super M> consumer) {
+    public <M extends ItemMeta> boolean editMeta(@Nonnull Class<M> metaClass, @Nonnull Consumer<? super M> consumer) {
         return handle.editMeta(metaClass, consumer);
     }
 
@@ -187,16 +186,15 @@ public class ItemTemplate
         return handle.setItemMeta(itemMeta);
     }
 
-    public @NotNull ItemStack enchantWithLevels(
-            @Range(from = 1L, to = 30L) int levels, boolean allowTreasure, @NotNull Random random) {
+    public @Nonnull ItemStack enchantWithLevels(int levels, boolean allowTreasure, @Nonnull Random random) {
         return handle.enchantWithLevels(levels, allowTreasure, random);
     }
 
-    public @NotNull HoverEvent<HoverEvent.ShowItem> asHoverEvent(@NotNull UnaryOperator<HoverEvent.ShowItem> op) {
+    public @Nonnull HoverEvent<HoverEvent.ShowItem> asHoverEvent(@Nonnull UnaryOperator<HoverEvent.ShowItem> op) {
         return handle.asHoverEvent(op);
     }
 
-    public @NotNull Component displayName() {
+    public @Nonnull Component displayName() {
         return handle.displayName();
     }
 
@@ -228,31 +226,31 @@ public class ItemTemplate
         handle.removeItemFlags(itemFlags);
     }
 
-    public @NotNull Set<ItemFlag> getItemFlags() {
+    public @Nonnull Set<ItemFlag> getItemFlags() {
         return handle.getItemFlags();
     }
 
-    public boolean hasItemFlag(@NotNull ItemFlag flag) {
+    public boolean hasItemFlag(@Nonnull ItemFlag flag) {
         return handle.hasItemFlag(flag);
     }
 
-    public @NotNull String translationKey() {
+    public @Nonnull String translationKey() {
         return handle.translationKey();
     }
 
-    public @NotNull ItemRarity getRarity() {
+    public @Nonnull ItemRarity getRarity() {
         return handle.getRarity();
     }
 
-    public boolean isRepairableBy(@NotNull ItemStack repairMaterial) {
+    public boolean isRepairableBy(@Nonnull ItemStack repairMaterial) {
         return handle.isRepairableBy(repairMaterial);
     }
 
-    public boolean canRepair(@NotNull ItemStack toBeRepaired) {
+    public boolean canRepair(@Nonnull ItemStack toBeRepaired) {
         return handle.canRepair(toBeRepaired);
     }
 
-    public @NotNull ItemStack damage(int amount, @NotNull LivingEntity livingEntity) {
+    public @Nonnull ItemStack damage(int amount, @Nonnull LivingEntity livingEntity) {
         return handle.damage(amount, livingEntity);
     }
 
@@ -265,7 +263,7 @@ public class ItemTemplate
         return new ItemStack(Material.AIR);
     }
 
-    public void setHandle(@NotNull ItemStack handle) {
+    public void setHandle(@Nonnull ItemStack handle) {
         this.handle = handle.clone();
         this.handle.setAmount(1);
         nbt_handle = new NBTItem(this.handle, true);
