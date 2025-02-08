@@ -50,7 +50,7 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     }
 
     public AdvancedCustomItemStack(Material type, String name, List<String> lore) {
-        super(type, CMIChatColor.translate(name), lore);
+        super(type, CMIChatColor.translate(name), CMIChatColor.translate(lore));
     }
 
     public AdvancedCustomItemStack(ItemStack item, List<String> list) {
