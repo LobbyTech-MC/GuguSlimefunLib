@@ -2,7 +2,6 @@ package me.ddggdd135.guguslimefunlib;
 
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import java.util.Objects;
-import me.ddggdd135.guguslimefunlib.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemKey {
