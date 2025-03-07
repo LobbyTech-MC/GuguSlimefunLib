@@ -27,9 +27,7 @@ public class ItemKey {
 
     @Override
     public int hashCode() {
-        String sfId = ItemUtils.getSFId(itemStack);
-        if (sfId == null) return Objects.hash(itemStack.getType());
-        return Objects.hash(itemStack.getType(), sfId);
+        return Objects.hash(itemStack.getType());
     }
 
     @Override
