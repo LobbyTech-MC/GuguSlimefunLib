@@ -1,134 +1,192 @@
 package me.ddggdd135.guguslimefunlib.api;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import org.bukkit.Material;
+import me.ddggdd135.guguslimefunlib.ItemKey;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemHashMap<T> implements Map<ItemStack, T> {
-    private final Object2ObjectOpenHashMap<Material, Map<ItemStack, T>> bukkits = new Object2ObjectOpenHashMap<>();
+public class ItemHashMap<V> implements Map<ItemStack, V> {
+    private final Map<ItemKey, V> map;
 
-    public ItemHashMap(@Nonnull Map<ItemStack, T> items) {
-        putAll(items);
+    public ItemHashMap() {
+        this.map = new HashMap<>();
     }
 
-    public ItemHashMap() {}
+    public ItemHashMap(@Nonnull Map<ItemStack, V> m) {
+        this.map = new HashMap<>();
+        putAll(m);
+    }
 
     @Override
     public int size() {
-        int size = 0;
-
-        for (Map.Entry<Material, Map<ItemStack, T>> entry : bukkits.entrySet()) {
-            size += entry.getValue().size();
-        }
-
-        return size;
+        return map.size();
     }
 
     @Override
     public boolean isEmpty() {
-        if (bukkits.isEmpty()) return true;
-        for (Map.Entry<Material, Map<ItemStack, T>> entry : bukkits.entrySet()) {
-            if (!entry.getValue().isEmpty()) return false;
-        }
-
-        return true;
+        return map.isEmpty();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        if (!(key instanceof ItemStack itemStack)) return false;
-        Map<ItemStack, T> bukkit = bukkits.get(itemStack.getType());
-        if (bukkit == null) return false;
-        return bukkit.containsKey(key);
-    }
-
-    @Override
-    public boolean containsValue(Object value) {
-        for (Map.Entry<Material, Map<ItemStack, T>> entry : bukkits.entrySet()) {
-            if (entry.getValue().containsValue(value)) return true;
+        if (key instanceof ItemStack) {
+            return map.containsKey(new ItemKey((ItemStack) key));
         }
-
         return false;
     }
 
     @Override
-    public T get(Object key) {
-        if (!(key instanceof ItemStack itemStack)) throw new IllegalArgumentException();
-        Map<ItemStack, T> bukkit = bukkits.get(itemStack.getType());
-        if (bukkit == null) return null;
-        return bukkit.get(key);
-    }
-
-    @Nullable @Override
-    public T put(ItemStack key, T value) {
-        Map<ItemStack, T> bukkit = bukkits.computeIfAbsent(key.getType(), k -> new HashMap<>());
-        return bukkit.put(key, value);
+    public boolean containsValue(Object value) {
+        return map.containsValue(value);
     }
 
     @Override
-    public T remove(Object key) {
-        if (!(key instanceof ItemStack itemStack)) return null;
-        Map<ItemStack, T> bukkit = bukkits.get(itemStack.getType());
-        return bukkit.remove(key);
+    public V get(Object key) {
+        if (key instanceof ItemStack) {
+            return map.get(new ItemKey((ItemStack) key));
+        }
+        return null;
     }
 
     @Override
-    public void putAll(@Nonnull Map<? extends ItemStack, ? extends T> m) {
-        m.forEach(this::put);
+    public V put(ItemStack key, V value) {
+        return map.put(new ItemKey(key), value);
+    }
+
+    @Override
+    public V remove(Object key) {
+        if (key instanceof ItemStack) {
+            return map.remove(new ItemKey((ItemStack) key));
+        }
+        return null;
+    }
+
+    @Override
+    public void putAll(Map<? extends ItemStack, ? extends V> m) {
+        for (Map.Entry<? extends ItemStack, ? extends V> entry : m.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
     @Override
     public void clear() {
-        bukkits.clear();
+        map.clear();
     }
 
-    @Nonnull
     @Override
     public Set<ItemStack> keySet() {
-        Set<ItemStack> itemStacks = new HashSet<>();
-        for (Map.Entry<Material, Map<ItemStack, T>> entry : bukkits.entrySet()) {
-            itemStacks.addAll(entry.getValue().keySet());
-        }
+        return new AbstractSet<ItemStack>() {
+            @Override
+            public Iterator<ItemStack> iterator() {
+                return new Iterator<ItemStack>() {
+                    private final Iterator<ItemKey> wrapperIterator =
+                            map.keySet().iterator();
 
-        return itemStacks;
+                    @Override
+                    public boolean hasNext() {
+                        return wrapperIterator.hasNext();
+                    }
+
+                    @Override
+                    public ItemStack next() {
+                        return wrapperIterator.next().getItemStack();
+                    }
+
+                    @Override
+                    public void remove() {
+                        wrapperIterator.remove();
+                    }
+                };
+            }
+
+            @Override
+            public int size() {
+                return map.size();
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return ItemHashMap.this.containsKey(o);
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return ItemHashMap.this.remove(o) != null;
+            }
+        };
     }
 
-    @Nonnull
     @Override
-    public Collection<T> values() {
-        Set<T> values = new HashSet<>();
-        for (Map.Entry<Material, Map<ItemStack, T>> entry : bukkits.entrySet()) {
-            values.addAll(entry.getValue().values());
-        }
-
-        return values;
+    public Collection<V> values() {
+        return map.values();
     }
 
-    @Nonnull
     @Override
-    public Set<Entry<ItemStack, T>> entrySet() {
-        return bukkits.entrySet().stream()
-                .flatMap(x -> x.getValue().entrySet().stream())
-                .map(x -> new Entry<ItemStack, T>() {
+    public Set<Map.Entry<ItemStack, V>> entrySet() {
+        return new AbstractSet<Map.Entry<ItemStack, V>>() {
+            @Override
+            public Iterator<Map.Entry<ItemStack, V>> iterator() {
+                return new Iterator<Map.Entry<ItemStack, V>>() {
+                    private final Iterator<Map.Entry<ItemKey, V>> entryIterator =
+                            map.entrySet().iterator();
+
                     @Override
-                    public ItemStack getKey() {
-                        return x.getKey();
+                    public boolean hasNext() {
+                        return entryIterator.hasNext();
                     }
 
                     @Override
-                    public T getValue() {
-                        return x.getValue();
+                    public Map.Entry<ItemStack, V> next() {
+                        Map.Entry<ItemKey, V> entry = entryIterator.next();
+                        return new AbstractMap.SimpleEntry<>(entry.getKey().getItemStack(), entry.getValue());
                     }
 
                     @Override
-                    public T setValue(T value) {
-                        return x.setValue(value);
+                    public void remove() {
+                        entryIterator.remove();
                     }
-                })
-                .collect(Collectors.toSet());
+                };
+            }
+
+            @Override
+            public int size() {
+                return map.size();
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                if (o instanceof Map.Entry) {
+                    Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
+                    if (entry.getKey() instanceof ItemStack) {
+                        ItemKey wrapper = new ItemKey((ItemStack) entry.getKey());
+                        return map.containsKey(wrapper) && Objects.equals(map.get(wrapper), entry.getValue());
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                if (o instanceof Map.Entry) {
+                    Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
+                    if (entry.getKey() instanceof ItemStack) {
+                        ItemKey wrapper = new ItemKey((ItemStack) entry.getKey());
+                        if (Objects.equals(map.get(wrapper), entry.getValue())) {
+                            map.remove(wrapper);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
+    }
+
+    @Override
+    public String toString() {
+        return map.entrySet().stream()
+                .map(entry -> entry.getKey().getItemStack() + "=" + entry.getValue())
+                .collect(Collectors.joining(", ", "{", "}"));
     }
 }

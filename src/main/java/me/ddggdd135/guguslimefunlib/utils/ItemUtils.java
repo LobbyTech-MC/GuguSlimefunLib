@@ -1,11 +1,14 @@
 package me.ddggdd135.guguslimefunlib.utils;
 
+import de.tr7zw.changeme.nbtapi.NBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.block.Block;
@@ -178,5 +181,14 @@ public class ItemUtils {
         }
 
         return createItems(found);
+    }
+
+    @Nullable public static String getSFId(@Nonnull ItemStack itemStack) {
+        return NBT.get(itemStack, x -> {
+            ReadableNBT pdc = x.getCompound("PublicBukkitValues");
+            if (pdc == null) return null;
+
+            return pdc.getString("slimefun:slimefun_item");
+        });
     }
 }
