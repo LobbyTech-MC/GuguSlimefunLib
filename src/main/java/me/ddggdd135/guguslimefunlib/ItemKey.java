@@ -31,8 +31,8 @@ public class ItemKey {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemKey that = (ItemKey) o;
-        // 自定义比较逻辑：只比较物品类型和数量
-        return SlimefunUtils.isItemSimilar(itemStack, that.itemStack, true, false);
+
+        return that.itemStack.equals(itemStack);
     }
 
     @Override
