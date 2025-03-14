@@ -1,14 +1,24 @@
 package me.ddggdd135.guguslimefunlib;
 
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import java.util.Objects;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemKey {
-    private final ItemStack itemStack;
+    private ItemStack itemStack;
+    private int hash;
 
     public ItemKey(ItemStack itemStack) {
-        this.itemStack = itemStack;
+        if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(itemStack.getClass())) {
+            this.itemStack = itemStack;
+        } else {
+            Object nmsStack = ReflectionMethod.ITEMSTACK_NMSCOPY.run((Object) null, new Object[] {itemStack});
+            this.itemStack =
+                    (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run((Object) null, new Object[] {nmsStack});
+        }
+
+        this.hash = itemStack.hashCode();
     }
 
     public ItemStack getItemStack() {
@@ -26,7 +36,7 @@ public class ItemKey {
 
     @Override
     public int hashCode() {
-        return Objects.hash(itemStack.getType());
+        return hash;
     }
 
     @Override

@@ -3,6 +3,7 @@ package me.ddggdd135.guguslimefunlib.utils;
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
+import me.ddggdd135.guguslimefunlib.items.ItemType;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -190,5 +192,20 @@ public class ItemUtils {
 
             return pdc.getString("slimefun:slimefun_item");
         });
+    }
+
+    @Nonnull
+    public static ItemType getItemType(@Nonnull ItemStack itemStack) {
+        if (itemStack instanceof SlimefunItemStack sfis) {
+            return new ItemType(true, sfis.getItemId(), sfis.getType());
+        }
+
+        String id = getSFId(itemStack);
+
+        if (id != null) {
+            return new ItemType(true, id, itemStack.getType());
+        }
+
+        return new ItemType(false, null, itemStack.getType());
     }
 }
