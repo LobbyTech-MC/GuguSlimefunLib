@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
 import me.ddggdd135.guguslimefunlib.items.ItemType;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
@@ -196,6 +197,7 @@ public class ItemUtils {
 
     @Nonnull
     public static ItemType getItemType(@Nonnull ItemStack itemStack) {
+        if (itemStack.getType().isAir() || itemStack.getAmount() == 0) return new ItemType(false, null, Material.AIR);
         if (itemStack instanceof SlimefunItemStack sfis) {
             return new ItemType(true, sfis.getItemId(), sfis.getType());
         }

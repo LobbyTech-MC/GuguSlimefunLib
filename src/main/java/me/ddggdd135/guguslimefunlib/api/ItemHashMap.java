@@ -1,6 +1,7 @@
 package me.ddggdd135.guguslimefunlib.api;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import me.ddggdd135.guguslimefunlib.ItemKey;
@@ -10,11 +11,11 @@ public class ItemHashMap<V> implements Map<ItemStack, V> {
     private final Map<ItemKey, V> map;
 
     public ItemHashMap() {
-        this.map = new HashMap<>();
+        this.map = new ConcurrentHashMap<>();
     }
 
     public ItemHashMap(@Nonnull Map<ItemStack, V> m) {
-        this.map = new HashMap<>();
+        this.map = new ConcurrentHashMap<>();
         putAll(m);
     }
 

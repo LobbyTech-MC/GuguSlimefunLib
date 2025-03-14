@@ -1,5 +1,6 @@
 package me.ddggdd135.guguslimefunlib.items;
 
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.bukkit.Material;
@@ -40,5 +41,20 @@ public class ItemType {
     @Nonnull
     public Material getMaterial() {
         return material;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemType itemType = (ItemType) o;
+        return isSlimefun == itemType.isSlimefun
+                && Objects.equals(sfid, itemType.sfid)
+                && material == itemType.material;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isSlimefun, sfid, material);
     }
 }

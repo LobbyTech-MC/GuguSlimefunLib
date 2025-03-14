@@ -2,7 +2,6 @@ package me.ddggdd135.guguslimefunlib;
 
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.ddggdd135.guguslimefunlib.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 
