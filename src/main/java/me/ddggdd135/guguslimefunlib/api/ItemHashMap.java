@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import me.ddggdd135.guguslimefunlib.ItemKey;
+import me.ddggdd135.guguslimefunlib.items.ItemKey;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemHashMap<V> implements Map<ItemStack, V> {

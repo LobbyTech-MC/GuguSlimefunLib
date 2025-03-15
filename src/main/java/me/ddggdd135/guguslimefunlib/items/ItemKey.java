@@ -1,4 +1,4 @@
-package me.ddggdd135.guguslimefunlib;
+package me.ddggdd135.guguslimefunlib.items;
 
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -13,9 +13,8 @@ public class ItemKey {
         if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(itemStack.getClass())) {
             this.itemStack = itemStack;
         } else {
-            Object nmsStack = ReflectionMethod.ITEMSTACK_NMSCOPY.run((Object) null, new Object[] {itemStack});
-            this.itemStack =
-                    (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run((Object) null, new Object[] {nmsStack});
+            Object nmsStack = ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, itemStack);
+            this.itemStack = (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, nmsStack);
         }
 
         this.hash = ItemUtils.getItemType(itemStack).hashCode();
