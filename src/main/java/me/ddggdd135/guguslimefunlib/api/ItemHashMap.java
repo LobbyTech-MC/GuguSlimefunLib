@@ -34,6 +34,11 @@ public class ItemHashMap<V> implements Map<ItemStack, V> {
         if (key instanceof ItemStack) {
             return map.containsKey(new ItemKey((ItemStack) key));
         }
+
+        if (key instanceof ItemKey itemKey) {
+            return map.containsKey(itemKey);
+        }
+
         return false;
     }
 
@@ -50,9 +55,17 @@ public class ItemHashMap<V> implements Map<ItemStack, V> {
         return null;
     }
 
+    public V getKey(ItemKey key) {
+        return map.get(key);
+    }
+
     @Override
     public V put(ItemStack key, V value) {
         return map.put(new ItemKey(key), value);
+    }
+
+    public V putKey(ItemKey key, V value) {
+        return map.put(key, value);
     }
 
     @Override

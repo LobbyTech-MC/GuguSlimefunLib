@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemKey {
     private ItemStack itemStack;
+    private ItemType type;
     private int hash;
 
     public ItemKey(ItemStack itemStack) {
@@ -16,12 +17,16 @@ public class ItemKey {
             Object nmsStack = ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, itemStack);
             this.itemStack = (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, nmsStack);
         }
-
-        this.hash = ItemUtils.getItemType(itemStack).hashCode();
+        this.type = ItemUtils.getItemType(itemStack);
+        this.hash = type.hashCode();
     }
 
     public ItemStack getItemStack() {
         return itemStack;
+    }
+
+    public ItemType getType() {
+        return type;
     }
 
     @Override
