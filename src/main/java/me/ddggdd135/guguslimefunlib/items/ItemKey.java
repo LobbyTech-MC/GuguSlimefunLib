@@ -11,12 +11,15 @@ public class ItemKey {
     private int hash;
 
     public ItemKey(ItemStack itemStack) {
+        itemStack = itemStack.asOne();
+
         if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(itemStack.getClass())) {
             this.itemStack = itemStack;
         } else {
             Object nmsStack = ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, itemStack);
             this.itemStack = (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, nmsStack);
         }
+
         this.type = ItemUtils.getItemType(itemStack);
         this.hash = type.hashCode();
     }
