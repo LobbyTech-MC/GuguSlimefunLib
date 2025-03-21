@@ -19,6 +19,11 @@ public class ItemHashMap<V> implements Map<ItemStack, V> {
         putAll(m);
     }
 
+    public ItemHashMap(@Nonnull ItemHashMap<V> m) {
+        this.map = new ConcurrentHashMap<>();
+        putAll(m);
+    }
+
     @Override
     public int size() {
         return map.size();
