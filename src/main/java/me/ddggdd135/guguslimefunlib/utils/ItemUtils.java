@@ -1,18 +1,22 @@
 package me.ddggdd135.guguslimefunlib.utils;
 
-import de.tr7zw.changeme.nbtapi.NBT;
-import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
+import city.norain.slimefun4.SlimefunExtended;
+import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.core.attributes.DistinctiveItem;
+import io.github.thebusybiscuit.slimefun4.core.debug.Debug;
+import io.github.thebusybiscuit.slimefun4.core.debug.TestCase;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.commons.lang.Validate;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
 import me.ddggdd135.guguslimefunlib.items.ItemType;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -21,9 +25,14 @@ import org.bukkit.block.Furnace;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemUtils {
+
+    private static final String SOULBOUND_LORE = ChatColor.GRAY + "灵魂绑定";
+
     @Nonnull
     public static ItemStack[] createItems(@Nonnull ItemStack template, int amount) {
         List<ItemStack> itemStacks = new ArrayList<>();
@@ -186,28 +195,115 @@ public class ItemUtils {
         return createItems(found);
     }
 
-    @Nullable public static String getSFId(@Nonnull ItemStack itemStack) {
-        return NBT.get(itemStack, x -> {
-            ReadableNBT pdc = x.getCompound("PublicBukkitValues");
-            if (pdc == null) return null;
+    @Nonnull
+    public static Pair<ItemType, ItemMeta> getItemType(@Nonnull ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if (itemStack.getType().isAir() || itemStack.getAmount() == 0)
+            return new Pair<>(new ItemType(false, null, Material.AIR), meta);
+        if (itemStack instanceof SlimefunItemStack sfis) {
+            return new Pair<>(new ItemType(true, sfis.getItemId(), sfis.getType()), meta);
+        }
 
-            return pdc.getString("slimefun:slimefun_item");
-        });
+        Optional<String> id = Slimefun.getItemDataService().getItemData(meta);
+
+        if (id.isPresent()) {
+            return new Pair<>(new ItemType(true, id.get(), itemStack.getType()), meta);
+        }
+
+        return new Pair<>(new ItemType(false, null, itemStack.getType()), meta);
     }
 
-    @Nonnull
-    public static ItemType getItemType(@Nonnull ItemStack itemStack) {
-        if (itemStack.getType().isAir() || itemStack.getAmount() == 0) return new ItemType(false, null, Material.AIR);
-        if (itemStack instanceof SlimefunItemStack sfis) {
-            return new ItemType(true, sfis.getItemId(), sfis.getType());
+    public static @Nonnull Optional<DistinctiveItem> getDistinctiveItem(@Nonnull String id) {
+        SlimefunItem slimefunItem = SlimefunItem.getById(id);
+        if (slimefunItem instanceof DistinctiveItem distinctiveItem) {
+            return Optional.of(distinctiveItem);
+        }
+        return Optional.empty();
+    }
+
+    public static boolean equalsItemMeta(
+            @Nonnull ItemMeta itemMeta,
+            @Nonnull ItemMeta sfitemMeta,
+            boolean checkLore,
+            boolean checkCustomModelCheck) {
+        if (itemMeta.hasDisplayName() != sfitemMeta.hasDisplayName()) return false;
+        else if (itemMeta.hasDisplayName()
+                && sfitemMeta.hasDisplayName()
+                && !itemMeta.getDisplayName().equals(sfitemMeta.getDisplayName())) return false;
+        else if (checkLore) {
+            boolean hasItemMetaLore = itemMeta.hasLore();
+            boolean hasSfItemMetaLore = sfitemMeta.hasLore();
+
+            if (hasItemMetaLore && hasSfItemMetaLore) {
+                if (!equalsLore(itemMeta.getLore(), sfitemMeta.getLore())) return false;
+
+            } else if (hasItemMetaLore != hasSfItemMetaLore) return false;
         }
 
-        String id = getSFId(itemStack);
-
-        if (id != null) {
-            return new ItemType(true, id, itemStack.getType());
+        if (checkCustomModelCheck) {
+            // Fixes #3133: name and lore are not enough
+            boolean hasItemMetaCustomModelData = itemMeta.hasCustomModelData();
+            boolean hasSfItemMetaCustomModelData = sfitemMeta.hasCustomModelData();
+            if (hasItemMetaCustomModelData
+                    && hasSfItemMetaCustomModelData
+                    && itemMeta.getCustomModelData() != sfitemMeta.getCustomModelData()) return false;
+            else if (hasItemMetaCustomModelData != hasSfItemMetaCustomModelData) return false;
         }
 
-        return new ItemType(false, null, itemStack.getType());
+        if (itemMeta instanceof PotionMeta potionMeta && sfitemMeta instanceof PotionMeta sfPotionMeta) {
+            if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_20_5)) {
+                if (!potionMeta.hasBasePotionType() && !sfPotionMeta.hasBasePotionType()) return true;
+
+                return potionMeta.hasBasePotionType()
+                        && sfPotionMeta.hasBasePotionType()
+                        && potionMeta.getBasePotionType().equals(sfPotionMeta.getBasePotionType());
+            } else if (SlimefunExtended.getMinecraftVersion().isAtLeast(1, 20, 2))
+                return potionMeta.getBasePotionType().equals(sfPotionMeta.getBasePotionType());
+            else return potionMeta.getBasePotionData().equals(sfPotionMeta.getBasePotionData());
+        }
+
+        Debug.log(TestCase.CARGO_INPUT_TESTING, "  All meta checked.");
+
+        return true;
+    }
+
+    /**
+     * This checks if the two provided lores are equal.
+     * This method will ignore any lines such as the soulbound one.
+     *
+     * @param lore1
+     *            The first lore
+     * @param lore2
+     *            The second lore
+     *
+     * @return Whether the two lores are equal
+     */
+    public static boolean equalsLore(@Nonnull List<String> lore1, @Nonnull List<String> lore2) {
+        Validate.notNull(lore1, "Cannot compare lore that is null!");
+        Validate.notNull(lore2, "Cannot compare lore that is null!");
+
+        List<String> longerList = lore1.size() > lore2.size() ? lore1 : lore2;
+        List<String> shorterList = lore1.size() > lore2.size() ? lore2 : lore1;
+
+        int a = 0;
+        int b = 0;
+
+        for (; a < longerList.size(); a++) {
+            if (isLineIgnored(longerList.get(a))) continue;
+
+            while (shorterList.size() > b && isLineIgnored(shorterList.get(b))) b++;
+
+            if (b >= shorterList.size()) return false;
+            else if (longerList.get(a).equals(shorterList.get(b))) b++;
+            else return false;
+        }
+
+        while (shorterList.size() > b && isLineIgnored(shorterList.get(b))) b++;
+
+        return b == shorterList.size();
+    }
+
+    private static boolean isLineIgnored(@Nonnull String line) {
+        return line.equals(SOULBOUND_LORE);
     }
 }

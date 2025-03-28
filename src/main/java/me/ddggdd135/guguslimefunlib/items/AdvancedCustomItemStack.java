@@ -99,7 +99,7 @@ public class AdvancedCustomItemStack extends CustomItemStack {
     }
 
     public AdvancedCustomItemStack doGlow() {
-        addUnsafeEnchantment(Enchantment.LUCK, 1);
+        addUnsafeEnchantment(Enchantment.LURE, 1);
         addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
         return this;
