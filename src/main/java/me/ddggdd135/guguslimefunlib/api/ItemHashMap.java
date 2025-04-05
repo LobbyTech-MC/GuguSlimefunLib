@@ -1,100 +1,235 @@
 package me.ddggdd135.guguslimefunlib.api;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import me.ddggdd135.guguslimefunlib.items.ItemKey;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemHashMap<T> implements Map<ItemStack, T> {
-    private final HashMap<ItemTemplate, T> hashMap = new HashMap<>();
+public class ItemHashMap<V> implements Map<ItemStack, V> {
+    private final Map<ItemKey, V> map;
 
-    public ItemHashMap(@Nonnull Map<ItemStack, T> items) {
-        putAll(items);
+    public ItemHashMap() {
+        this.map = new ConcurrentHashMap<>();
     }
 
-    public ItemHashMap() {}
+    public ItemHashMap(@Nonnull Map<ItemStack, V> m) {
+        this.map = new ConcurrentHashMap<>();
+        putAll(m);
+    }
+
+    public ItemHashMap(@Nonnull ItemHashMap<V> m) {
+        this.map = new ConcurrentHashMap<>();
+        putAll(m);
+    }
 
     @Override
     public int size() {
-        return hashMap.size();
+        return map.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return hashMap.isEmpty();
+        return map.isEmpty();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        if (key instanceof ItemStack itemStack) return hashMap.containsKey(new ItemTemplate(itemStack));
+        if (key instanceof ItemStack) {
+            return map.containsKey(new ItemKey((ItemStack) key));
+        }
+
+        if (key instanceof ItemKey itemKey) {
+            return map.containsKey(itemKey);
+        }
+
         return false;
     }
 
     @Override
     public boolean containsValue(Object value) {
-        return hashMap.containsValue(value);
+        return map.containsValue(value);
     }
 
     @Override
-    public T get(Object key) {
-        if (key instanceof ItemStack itemStack) return hashMap.get(new ItemTemplate(itemStack));
-        throw new IllegalArgumentException();
-    }
-
-    @Nullable @Override
-    public T put(ItemStack key, T value) {
-        return hashMap.put(new ItemTemplate(key), value);
-    }
-
-    @Override
-    public T remove(Object key) {
-        if (key instanceof ItemStack itemStack) return hashMap.remove(new ItemTemplate(itemStack));
+    public V get(Object key) {
+        if (key instanceof ItemStack) {
+            return map.get(new ItemKey((ItemStack) key));
+        }
         return null;
     }
 
+    public V getKey(ItemKey key) {
+        return map.get(key);
+    }
+
     @Override
-    public void putAll(@Nonnull Map<? extends ItemStack, ? extends T> m) {
-        m.forEach((k, v) -> put(k, v));
+    public V put(ItemStack key, V value) {
+        return map.put(new ItemKey(key), value);
+    }
+
+    public V putKey(ItemKey key, V value) {
+        return map.put(key, value);
+    }
+
+    @Override
+    public V remove(Object key) {
+        if (key instanceof ItemStack) {
+            return map.remove(new ItemKey((ItemStack) key));
+        }
+        return null;
+    }
+
+    public V removeKey(ItemKey key) {
+        return map.remove(key);
+    }
+
+    @Override
+    public void putAll(Map<? extends ItemStack, ? extends V> m) {
+        for (Map.Entry<? extends ItemStack, ? extends V> entry : m.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
+    }
+
+    public void putAll(ItemHashMap<V> m) {
+        for (Map.Entry<? extends ItemKey, ? extends V> entry : m.keyEntrySet()) {
+            putKey(entry.getKey(), entry.getValue());
+        }
     }
 
     @Override
     public void clear() {
-        hashMap.clear();
+        map.clear();
     }
 
-    @Nonnull
     @Override
     public Set<ItemStack> keySet() {
-        return hashMap.keySet().stream().map(x -> x.getHandle()).collect(Collectors.toSet());
+        return new AbstractSet<ItemStack>() {
+            @Override
+            public Iterator<ItemStack> iterator() {
+                return new Iterator<ItemStack>() {
+                    private final Iterator<ItemKey> wrapperIterator =
+                            map.keySet().iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return wrapperIterator.hasNext();
+                    }
+
+                    @Override
+                    public ItemStack next() {
+                        return wrapperIterator.next().getItemStack();
+                    }
+
+                    @Override
+                    public void remove() {
+                        wrapperIterator.remove();
+                    }
+                };
+            }
+
+            @Override
+            public int size() {
+                return map.size();
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return ItemHashMap.this.containsKey(o);
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return ItemHashMap.this.remove(o) != null;
+            }
+        };
     }
 
-    @Nonnull
     @Override
-    public Collection<T> values() {
-        return hashMap.values();
+    public Collection<V> values() {
+        return map.values();
     }
 
-    @Nonnull
     @Override
-    public Set<Entry<ItemStack, T>> entrySet() {
-        return hashMap.entrySet().stream()
-                .map(x -> new Entry<ItemStack, T>() {
+    public Set<Map.Entry<ItemStack, V>> entrySet() {
+        return new AbstractSet<Map.Entry<ItemStack, V>>() {
+            @Override
+            public Iterator<Map.Entry<ItemStack, V>> iterator() {
+                return new Iterator<Map.Entry<ItemStack, V>>() {
+                    private final Iterator<Map.Entry<ItemKey, V>> entryIterator =
+                            map.entrySet().iterator();
+
                     @Override
-                    public ItemStack getKey() {
-                        return x.getKey().getHandle();
+                    public boolean hasNext() {
+                        return entryIterator.hasNext();
                     }
 
                     @Override
-                    public T getValue() {
-                        return x.getValue();
+                    public Map.Entry<ItemStack, V> next() {
+                        Map.Entry<ItemKey, V> entry = entryIterator.next();
+                        return new AbstractMap.SimpleEntry<>(entry.getKey().getItemStack(), entry.getValue());
                     }
 
                     @Override
-                    public T setValue(T value) {
-                        return x.setValue(value);
+                    public void remove() {
+                        entryIterator.remove();
                     }
-                })
-                .collect(Collectors.toSet());
+                };
+            }
+
+            @Override
+            public int size() {
+                return map.size();
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                if (o instanceof Map.Entry) {
+                    Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
+                    if (entry.getKey() instanceof ItemStack) {
+                        ItemKey wrapper = new ItemKey((ItemStack) entry.getKey());
+                        return map.containsKey(wrapper) && Objects.equals(map.get(wrapper), entry.getValue());
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                if (o instanceof Map.Entry) {
+                    Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
+                    if (entry.getKey() instanceof ItemStack) {
+                        ItemKey wrapper = new ItemKey((ItemStack) entry.getKey());
+                        if (Objects.equals(map.get(wrapper), entry.getValue())) {
+                            map.remove(wrapper);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
+    }
+
+    public Set<Map.Entry<ItemKey, V>> keyEntrySet() {
+        return map.entrySet();
+    }
+
+    public Set<ItemKey> sourceKeySet() {
+        return map.keySet();
+    }
+
+    public V getOrDefault(ItemKey key, V defaultValue) {
+        V v;
+
+        return (((v = getKey(key)) != null) || containsKey(key)) ? v : defaultValue;
+    }
+
+    @Override
+    public String toString() {
+        return map.entrySet().stream()
+                .map(entry -> entry.getKey().getItemStack() + "=" + entry.getValue())
+                .collect(Collectors.joining(", ", "{", "}"));
     }
 }
