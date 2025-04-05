@@ -1,13 +1,15 @@
 package me.ddggdd135.guguslimefunlib.api;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 import javax.annotation.Nonnull;
+import me.ddggdd135.guguslimefunlib.items.ItemKey;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemHashSet implements Set<ItemStack> {
+public class ItemHashSet implements Set<ItemKey> {
     private final ItemHashMap<Boolean> map = new ItemHashMap<>();
 
-    @Override
     public boolean add(ItemStack e) {
         return map.put(e, Boolean.TRUE) == null;
     }
@@ -33,7 +35,17 @@ public class ItemHashSet implements Set<ItemStack> {
     }
 
     @Override
-    public boolean addAll(@Nonnull Collection<? extends ItemStack> c) {
+    public boolean addAll(@Nonnull Collection<? extends ItemKey> c) {
+        boolean modified = false;
+        for (ItemKey e : c) {
+            if (add(e)) {
+                modified = true;
+            }
+        }
+        return modified;
+    }
+
+    public boolean addAllItemStacks(@Nonnull Collection<? extends ItemStack> c) {
         boolean modified = false;
         for (ItemStack e : c) {
             if (add(e)) {
@@ -46,9 +58,9 @@ public class ItemHashSet implements Set<ItemStack> {
     @Override
     public boolean retainAll(@Nonnull Collection<?> c) {
         boolean modified = false;
-        Iterator<ItemStack> it = iterator();
+        Iterator<ItemKey> it = iterator();
         while (it.hasNext()) {
-            ItemStack e = it.next();
+            ItemKey e = it.next();
             if (!c.contains(e)) {
                 it.remove();
                 modified = true;
@@ -79,9 +91,14 @@ public class ItemHashSet implements Set<ItemStack> {
     }
 
     @Nonnull
-    @Override
-    public Iterator<ItemStack> iterator() {
+    public Iterator<ItemStack> itemIterator() {
         return map.keySet().iterator(); // 使用 ConcurrentHashMap 的 keySet 作为迭代器
+    }
+
+    @Nonnull
+    @Override
+    public Iterator<ItemKey> iterator() {
+        return map.sourceKeySet().iterator(); // 使用 ConcurrentHashMap 的 keySet 作为迭代器
     }
 
     @Nonnull
@@ -94,6 +111,11 @@ public class ItemHashSet implements Set<ItemStack> {
     @Override
     public <T> T[] toArray(@Nonnull T[] a) {
         return map.keySet().toArray(a);
+    }
+
+    @Override
+    public boolean add(ItemKey e) {
+        return map.putKey(e, Boolean.TRUE) == null;
     }
 
     public void clear() {

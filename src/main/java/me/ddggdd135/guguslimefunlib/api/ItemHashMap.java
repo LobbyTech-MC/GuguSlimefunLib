@@ -19,6 +19,11 @@ public class ItemHashMap<V> implements Map<ItemStack, V> {
         putAll(m);
     }
 
+    public ItemHashMap(@Nonnull ItemHashMap<V> m) {
+        this.map = new ConcurrentHashMap<>();
+        putAll(m);
+    }
+
     @Override
     public int size() {
         return map.size();
@@ -76,10 +81,20 @@ public class ItemHashMap<V> implements Map<ItemStack, V> {
         return null;
     }
 
+    public V removeKey(ItemKey key) {
+        return map.remove(key);
+    }
+
     @Override
     public void putAll(Map<? extends ItemStack, ? extends V> m) {
         for (Map.Entry<? extends ItemStack, ? extends V> entry : m.entrySet()) {
             put(entry.getKey(), entry.getValue());
+        }
+    }
+
+    public void putAll(ItemHashMap<V> m) {
+        for (Map.Entry<? extends ItemKey, ? extends V> entry : m.keyEntrySet()) {
+            putKey(entry.getKey(), entry.getValue());
         }
     }
 
@@ -195,6 +210,20 @@ public class ItemHashMap<V> implements Map<ItemStack, V> {
                 return false;
             }
         };
+    }
+
+    public Set<Map.Entry<ItemKey, V>> keyEntrySet() {
+        return map.entrySet();
+    }
+
+    public Set<ItemKey> sourceKeySet() {
+        return map.keySet();
+    }
+
+    public V getOrDefault(ItemKey key, V defaultValue) {
+        V v;
+
+        return (((v = getKey(key)) != null) || containsKey(key)) ? v : defaultValue;
     }
 
     @Override
