@@ -5,8 +5,8 @@ import javax.annotation.Nonnull;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemStackCache {
-    private ItemStack itemStack;
-    private ItemKey itemKey;
+    private final ItemStack itemStack;
+    private final ItemKey itemKey;
 
     public ItemStackCache(@Nonnull ItemStack itemStack) {
         this.itemStack = itemStack;
@@ -16,6 +16,11 @@ public class ItemStackCache {
     @Nonnull
     public ItemStack getItemStack() {
         return itemStack;
+    }
+
+    @Nonnull
+    public ItemKey getItemKey() {
+        return itemKey;
     }
 
     @Override
