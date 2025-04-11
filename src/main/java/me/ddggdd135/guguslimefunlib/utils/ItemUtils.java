@@ -14,6 +14,7 @@ import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import java.util.*;
 import javax.annotation.Nonnull;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
+import me.ddggdd135.guguslimefunlib.items.ItemKey;
 import me.ddggdd135.guguslimefunlib.items.ItemType;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.ChatColor;
@@ -75,10 +76,11 @@ public class ItemUtils {
         ItemHashMap<Integer> storage = new ItemHashMap<>();
         for (ItemStack itemStack : itemStacks) {
             if (itemStack == null || itemStack.getType().isAir()) continue;
-            if (storage.containsKey(itemStack)) {
-                storage.put(itemStack, storage.get(itemStack) + itemStack.getAmount());
+            ItemKey itemKey = new ItemKey(itemStack);
+            if (storage.containsKey(itemKey)) {
+                storage.putKey(itemKey, storage.getKey(itemKey) + itemStack.getAmount());
             } else {
-                storage.put(itemStack, itemStack.getAmount());
+                storage.putKey(itemKey, itemStack.getAmount());
             }
         }
         return storage;
