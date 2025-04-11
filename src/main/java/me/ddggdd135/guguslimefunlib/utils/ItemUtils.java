@@ -30,7 +30,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemUtils {
-
     private static final String SOULBOUND_LORE = ChatColor.GRAY + "灵魂绑定";
 
     @Nonnull
