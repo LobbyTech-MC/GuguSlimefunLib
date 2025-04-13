@@ -70,6 +70,6 @@ public class ItemStackNMS {
             })
             .v();
     public static final Method matches = new InitializeSafeProvider<>(
-                    () -> nmsItemStackClass.getMethod("matches", nmsItemStackClass, nmsItemStackClass))
+                    () -> nmsItemStackClass.getMethod("a", nmsItemStackClass, nmsItemStackClass))
             .v();
 }
