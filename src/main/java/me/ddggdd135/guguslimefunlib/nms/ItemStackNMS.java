@@ -39,8 +39,12 @@ public class ItemStackNMS {
     private static final Class<?> craftItemStackClass =
             new InitializeProvider<Class<?>>(() -> craftItemStack != null ? craftItemStack.getClass() : null).v();
 
-    public static final Method asNMSCopy =
-            new InitializeSafeProvider<>(() -> craftItemStackClass.getMethod("asNMSCopy", ItemStack.class)).v();
+    public static final Method asNMSCopy = new InitializeSafeProvider<>(() -> {
+                Method method = craftItemStackClass.getMethod("asNMSCopy", ItemStack.class);
+                method.setAccessible(true);
+                return method;
+            })
+            .v();
     public static final Object nmsItemStack = new InitializeSafeProvider<>(() -> {
                 try {
                     return asNMSCopy.invoke(null, craftItemStack);
@@ -54,10 +58,17 @@ public class ItemStackNMS {
     private static final Class<?> nmsItemStackClass =
             new InitializeProvider<Class<?>>(() -> nmsItemStack != null ? nmsItemStack.getClass() : null).v();
 
-    public static final Method asCraftMirror =
-            new InitializeSafeProvider<>(() -> craftItemStackClass.getMethod("asCraftMirror", nmsItemStackClass)).v();
-    public static final Method copyNMSStack = new InitializeSafeProvider<>(
-                    () -> craftItemStackClass.getMethod("copyNMSStack", nmsItemStackClass, int.class))
+    public static final Method asCraftMirror = new InitializeSafeProvider<>(() -> {
+                Method method = craftItemStackClass.getMethod("asCraftMirror", nmsItemStackClass);
+                method.setAccessible(true);
+                return method;
+            })
+            .v();
+    public static final Method copyNMSStack = new InitializeSafeProvider<>(() -> {
+                Method method = craftItemStackClass.getMethod("copyNMSStack", nmsItemStackClass, int.class);
+                method.setAccessible(true);
+                return method;
+            })
             .v();
     public static final java.lang.invoke.VarHandle CRAFT_ITEM_STACK_HANDLE_FILED = new InitializeSafeProvider<>(() -> {
                 try {
@@ -69,7 +80,10 @@ public class ItemStackNMS {
                 }
             })
             .v();
-    public static final Method matches = new InitializeSafeProvider<>(
-                    () -> nmsItemStackClass.getMethod("a", nmsItemStackClass, nmsItemStackClass))
+    public static final Method matches = new InitializeSafeProvider<>(() -> {
+                Method method = nmsItemStackClass.getMethod("a", nmsItemStackClass, nmsItemStackClass);
+                method.setAccessible(true);
+                return method;
+            })
             .v();
 }
