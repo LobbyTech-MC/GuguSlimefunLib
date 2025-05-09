@@ -9,13 +9,17 @@ import io.github.thebusybiscuit.slimefun4.core.debug.Debug;
 import io.github.thebusybiscuit.slimefun4.core.debug.TestCase;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.commons.lang.Validate;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
 import me.ddggdd135.guguslimefunlib.items.ItemKey;
 import me.ddggdd135.guguslimefunlib.items.ItemType;
+import me.matl114.matlib.nmsMirror.impl.CraftBukkit;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,6 +32,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemUtils {
@@ -166,7 +172,7 @@ public class ItemUtils {
         return item;
     }
 
-    public static ItemStack[] tryTakeItem(
+    public static ItemStack[] takeItem(
             @Nonnull BlockMenu blockMenu, @Nonnull ItemHashMap<Integer> items, int... slots) {
         ItemHashMap<Integer> amounts = new ItemHashMap<>(items);
         ItemHashMap<Integer> found = new ItemHashMap<>();
@@ -197,21 +203,32 @@ public class ItemUtils {
     }
 
     @Nonnull
-    public static Pair<ItemType, ItemMeta> getItemType(@Nonnull ItemStack itemStack) {
-        ItemMeta meta = itemStack.getItemMeta();
-        if (itemStack.getType().isAir() || itemStack.getAmount() == 0)
-            return new Pair<>(new ItemType(false, null, Material.AIR), meta);
+    public static ItemType getItemType(@Nonnull ItemStack itemStack) {
+        if (itemStack.getType().isAir() || itemStack.getAmount() == 0) return new ItemType(false, null, Material.AIR);
         if (itemStack instanceof SlimefunItemStack sfis) {
-            return new Pair<>(new ItemType(true, sfis.getItemId(), sfis.getType()), meta);
+            return new ItemType(true, sfis.getItemId(), sfis.getType());
         }
 
-        Optional<String> id = Slimefun.getItemDataService().getItemData(meta);
+        String id = getSFId(itemStack);
 
-        if (id.isPresent()) {
-            return new Pair<>(new ItemType(true, id.get(), itemStack.getType()), meta);
+        if (id != null) {
+            return new ItemType(true, id, itemStack.getType());
         }
 
-        return new Pair<>(new ItemType(false, null, itemStack.getType()), meta);
+        return new ItemType(false, null, itemStack.getType());
+    }
+
+    @Nullable public static String getSFId(@Nonnull ItemStack itemStack) {
+        PersistentDataContainer pdc;
+        if (CraftBukkit.ITEMSTACK.isCraftItemStack(itemStack)) {
+            pdc = me.matl114.matlib.nmsUtils.ItemUtils.getPersistentDataContainerView(itemStack, false);
+        } else {
+            pdc = itemStack.getItemMeta().getPersistentDataContainer();
+        }
+
+        if (pdc == null) return null;
+
+        return pdc.get(Slimefun.getItemDataService().getKey(), PersistentDataType.STRING);
     }
 
     public static @Nonnull Optional<DistinctiveItem> getDistinctiveItem(@Nonnull String id) {
