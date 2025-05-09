@@ -1,8 +1,6 @@
 package me.ddggdd135.guguslimefunlib.utils;
 
 import city.norain.slimefun4.SlimefunExtended;
-import de.tr7zw.changeme.nbtapi.NBT;
-import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -12,12 +10,16 @@ import io.github.thebusybiscuit.slimefun4.core.debug.TestCase;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.commons.lang.Validate;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import me.ddggdd135.guguslimefunlib.api.ItemHashMap;
 import me.ddggdd135.guguslimefunlib.items.ItemKey;
 import me.ddggdd135.guguslimefunlib.items.ItemType;
+import me.matl114.matlib.nmsMirror.impl.CraftBukkit;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,6 +32,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemUtils {
@@ -215,12 +219,16 @@ public class ItemUtils {
     }
 
     @Nullable public static String getSFId(@Nonnull ItemStack itemStack) {
-        return NBT.get(itemStack, x -> {
-            ReadableNBT pdc = x.getCompound("PublicBukkitValues");
-            if (pdc == null) return null;
+        PersistentDataContainer pdc;
+        if (CraftBukkit.ITEMSTACK.isCraftItemStack(itemStack)) {
+            pdc = me.matl114.matlib.nmsUtils.ItemUtils.getPersistentDataContainerView(itemStack, false);
+        } else {
+            pdc = itemStack.getItemMeta().getPersistentDataContainer();
+        }
 
-            return pdc.getString("slimefun:slimefun_item");
-        });
+        if (pdc == null) return null;
+
+        return pdc.get(Slimefun.getItemDataService().getKey(), PersistentDataType.STRING);
     }
 
     public static @Nonnull Optional<DistinctiveItem> getDistinctiveItem(@Nonnull String id) {

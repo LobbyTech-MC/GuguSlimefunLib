@@ -1,7 +1,8 @@
 package me.ddggdd135.guguslimefunlib.items;
 
-import me.ddggdd135.guguslimefunlib.nms.ItemStackNMS;
 import me.ddggdd135.guguslimefunlib.utils.ItemUtils;
+import me.matl114.matlib.nmsMirror.impl.CraftBukkit;
+import me.matl114.matlib.nmsMirror.impl.NMSItem;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemKey {
@@ -14,12 +15,12 @@ public class ItemKey {
         try {
             itemStack = itemStack.asOne();
 
-            if (ItemStackNMS.getCraftItemStackClass().isAssignableFrom(itemStack.getClass())) {
+            if (CraftBukkit.ITEMSTACK.isCraftItemStack(itemStack)) {
                 this.itemStack = itemStack;
-                nms = ItemStackNMS.CRAFT_ITEM_STACK_HANDLE_FILED.get(itemStack);
+                nms = CraftBukkit.ITEMSTACK.unwrapToNMS(itemStack);
             } else {
-                Object nmsStack = ItemStackNMS.asNMSCopy.invoke(null, itemStack);
-                this.itemStack = (ItemStack) ItemStackNMS.asCraftMirror.invoke(null, nmsStack);
+                Object nmsStack = CraftBukkit.ITEMSTACK.asNMSCopy(itemStack);
+                this.itemStack = CraftBukkit.ITEMSTACK.asCraftMirror(nmsStack);
                 nms = nmsStack;
             }
 
@@ -45,7 +46,7 @@ public class ItemKey {
         ItemKey that = (ItemKey) o;
 
         try {
-            return (boolean) ItemStackNMS.matches.invoke(null, nms, that.nms);
+            return NMSItem.ITEMSTACK.matchItem(nms, that.nms, false, false);
         } catch (Throwable throwable) {
             throw new RuntimeException(throwable);
         }
