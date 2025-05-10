@@ -6,3 +6,12 @@ authors:
   - JWJUN233233
 depend:
   - Slimefun
+
+commands:
+  server_uuid:
+    description: "获取服务器uuid"
+
+permissions:
+  guguslimefunlib.server_uuid:
+    description: "获取服务器uuid"
+    default: op
