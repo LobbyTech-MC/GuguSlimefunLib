@@ -16,6 +16,7 @@ public class ItemHashSet implements Set<ItemKey> {
 
     @Override
     public boolean remove(Object e) {
+        if (e instanceof ItemKey itemKey) return map.removeKey(itemKey);
         return map.remove(e) != null;
     }
 
@@ -104,13 +105,13 @@ public class ItemHashSet implements Set<ItemKey> {
     @Nonnull
     @Override
     public Object[] toArray() {
-        return map.keySet().toArray();
+        return map.sourceKeySet().toArray();
     }
 
     @Nonnull
     @Override
     public <T> T[] toArray(@Nonnull T[] a) {
-        return map.keySet().toArray(a);
+        return map.sourceKeySet().toArray(a);
     }
 
     @Override

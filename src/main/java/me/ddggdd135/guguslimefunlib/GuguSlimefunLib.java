@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 import lombok.Getter;
+import me.ddggdd135.guguslimefunlib.commands.ServerUUID;
 import me.ddggdd135.guguslimefunlib.listeners.InventoryListener;
 import me.ddggdd135.guguslimefunlib.utils.UUIDUtils;
 import org.bukkit.Bukkit;
@@ -44,6 +45,9 @@ public final class GuguSlimefunLib extends JavaPlugin implements SlimefunAddon {
         }
 
         Bukkit.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+        ServerUUID serverUUIDCommand = new ServerUUID();
+        getCommand("server_uuid").setTabCompleter(serverUUIDCommand);
+        getCommand("server_uuid").setExecutor(serverUUIDCommand);
     }
 
     @Override

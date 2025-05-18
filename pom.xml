@@ -49,6 +49,10 @@
                             <pattern>de.tr7zw.changeme.nbtapi</pattern>
                             <shadedPattern>me.ddggdd135.guguslimefunlib.libraries.nbtapi</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>me.matl114.matlib</pattern>
+                            <shadedPattern>me.ddggdd135.guguslimefunlib.libraries.matlib</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
@@ -131,9 +135,15 @@
           <scope>provided</scope>
       </dependency>
       <dependency>
-          <groupId>de.tr7zw</groupId>
-          <artifactId>item-nbt-api</artifactId>
-          <version>2.14.1</version>
+          <groupId>com.github.TimetownDev</groupId>
+          <artifactId>Item-NBT-API</artifactId>
+          <version>f109d2ada8</version>
+      </dependency>
+      <dependency>
+          <groupId>com.github.m1919810</groupId>
+          <artifactId>matlib</artifactId>
+          <version>53afb17bced0f07df687ad71fd90294b7ac7d799</version>
+          <scope>compile</scope>
       </dependency>
   </dependencies>
 </project>

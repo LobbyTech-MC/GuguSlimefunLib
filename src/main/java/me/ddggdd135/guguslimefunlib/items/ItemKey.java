@@ -1,33 +1,34 @@
 package me.ddggdd135.guguslimefunlib.items;
 
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import me.ddggdd135.guguslimefunlib.utils.ItemUtils;
+import me.matl114.matlib.nmsMirror.impl.CraftBukkit;
+import me.matl114.matlib.nmsMirror.impl.NMSItem;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemKey {
     private ItemStack itemStack;
     private ItemType type;
-    private ItemMeta meta;
+    private Object nms;
     private int hash;
 
     public ItemKey(ItemStack itemStack) {
-        itemStack = itemStack.asOne();
+        try {
+            itemStack = itemStack.asOne();
 
-        if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(itemStack.getClass())) {
-            this.itemStack = itemStack;
-        } else {
-            Object nmsStack = ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, itemStack);
-            this.itemStack = (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, nmsStack);
+            if (CraftBukkit.ITEMSTACK.isCraftItemStack(itemStack)) {
+                this.itemStack = itemStack;
+                nms = CraftBukkit.ITEMSTACK.unwrapToNMS(itemStack);
+            } else {
+                Object nmsStack = CraftBukkit.ITEMSTACK.asNMSCopy(itemStack);
+                this.itemStack = CraftBukkit.ITEMSTACK.asCraftMirror(nmsStack);
+                nms = nmsStack;
+            }
+
+            this.type = ItemUtils.getItemType(itemStack);
+            this.hash = type.hashCode();
+        } catch (Throwable throwable) {
+            throw new RuntimeException(throwable);
         }
-
-        Pair<ItemType, ItemMeta> data = ItemUtils.getItemType(itemStack);
-
-        this.type = data.getFirstValue();
-        this.meta = data.getSecondValue();
-        this.hash = type.hashCode();
     }
 
     public ItemStack getItemStack() {
@@ -44,7 +45,11 @@ public class ItemKey {
         if (o == null || getClass() != o.getClass()) return false;
         ItemKey that = (ItemKey) o;
 
-        return type.equals(that.type) && ItemUtils.equalsItemMeta(meta, that.meta, true, false);
+        try {
+            return NMSItem.ITEMSTACK.matchItem(nms, that.nms, false, false);
+        } catch (Throwable throwable) {
+            throw new RuntimeException(throwable);
+        }
     }
 
     @Override
