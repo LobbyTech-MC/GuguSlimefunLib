@@ -131,13 +131,13 @@
       <dependency>
           <groupId>com.github.SlimefunGuguProject</groupId>
           <artifactId>Slimefun4</artifactId>
-          <version>dev-SNAPSHOT</version>
+          <version>2025.1</version>
           <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>com.github.TimetownDev</groupId>
           <artifactId>Item-NBT-API</artifactId>
-          <version>f109d2ada8</version>
+          <version>55a883f078</version>
       </dependency>
       <dependency>
           <groupId>com.github.m1919810</groupId>
