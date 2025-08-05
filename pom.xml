@@ -137,7 +137,7 @@
       <dependency>
           <groupId>com.github.TimetownDev</groupId>
           <artifactId>Item-NBT-API</artifactId>
-          <version>f109d2ada8</version>
+          <version>55a883f078</version>
       </dependency>
       <dependency>
           <groupId>com.github.m1919810</groupId>
