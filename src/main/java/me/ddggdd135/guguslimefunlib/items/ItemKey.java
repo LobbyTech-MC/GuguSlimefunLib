@@ -1,6 +1,5 @@
 package me.ddggdd135.guguslimefunlib.items;
 
-import me.ddggdd135.guguslimefunlib.nms.ItemNMS;
 import me.ddggdd135.guguslimefunlib.utils.ItemUtils;
 import me.matl114.matlib.nmsMirror.impl.CraftBukkit;
 import me.matl114.matlib.nmsMirror.impl.NMSItem;
@@ -16,15 +15,8 @@ public class ItemKey {
         try {
             itemStack = itemStack.asOne();
 
-            if (CraftBukkit.ITEMSTACK.isCraftItemStack(itemStack)) {
-                this.itemStack = itemStack;
-                nms = ItemNMS.API_ITEM_STACK_CRAFT_DELEGATE_FIELD.get(itemStack);
-            } else {
-                Object nmsStack = CraftBukkit.ITEMSTACK.asNMSCopy(itemStack);
-                this.itemStack = CraftBukkit.ITEMSTACK.asCraftMirror(nmsStack);
-                nms = nmsStack;
-            }
-
+            this.nms = CraftBukkit.ITEMSTACK.unwrapToNMS(itemStack);
+            this.itemStack = CraftBukkit.ITEMSTACK.asCraftMirror(nms);
             this.type = ItemUtils.getItemType(itemStack);
             this.hash = type.hashCode();
         } catch (Throwable throwable) {
