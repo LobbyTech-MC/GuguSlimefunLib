@@ -15,15 +15,8 @@ public class ItemKey {
         try {
             itemStack = itemStack.asOne();
 
-            if (CraftBukkit.ITEMSTACK.isCraftItemStack(itemStack)) {
-                this.itemStack = itemStack;
-                nms = CraftBukkit.ITEMSTACK.unwrapToNMS(itemStack);
-            } else {
-                Object nmsStack = CraftBukkit.ITEMSTACK.asNMSCopy(itemStack);
-                this.itemStack = CraftBukkit.ITEMSTACK.asCraftMirror(nmsStack);
-                nms = nmsStack;
-            }
-
+            this.nms = CraftBukkit.ITEMSTACK.unwrapToNMS(itemStack);
+            this.itemStack = CraftBukkit.ITEMSTACK.asCraftMirror(nms);
             this.type = ItemUtils.getItemType(itemStack);
             this.hash = type.hashCode();
         } catch (Throwable throwable) {
