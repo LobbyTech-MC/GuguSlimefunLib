@@ -1,7 +1,5 @@
 package me.ddggdd135.guguslimefunlib.utils;
 
-import city.norain.slimefun4.SlimefunExtended;
-import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.core.attributes.DistinctiveItem;
@@ -269,15 +267,11 @@ public class ItemUtils {
         }
 
         if (itemMeta instanceof PotionMeta potionMeta && sfitemMeta instanceof PotionMeta sfPotionMeta) {
-            if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_20_5)) {
-                if (!potionMeta.hasBasePotionType() && !sfPotionMeta.hasBasePotionType()) return true;
+            if (!potionMeta.hasBasePotionType() && !sfPotionMeta.hasBasePotionType()) return true;
 
-                return potionMeta.hasBasePotionType()
-                        && sfPotionMeta.hasBasePotionType()
-                        && potionMeta.getBasePotionType().equals(sfPotionMeta.getBasePotionType());
-            } else if (SlimefunExtended.getMinecraftVersion().isAtLeast(1, 20, 2))
-                return potionMeta.getBasePotionType().equals(sfPotionMeta.getBasePotionType());
-            else return potionMeta.getBasePotionData().equals(sfPotionMeta.getBasePotionData());
+            return potionMeta.hasBasePotionType()
+                    && sfPotionMeta.hasBasePotionType()
+                    && potionMeta.getBasePotionType().equals(sfPotionMeta.getBasePotionType());
         }
 
         Debug.log(TestCase.CARGO_INPUT_TESTING, "  All meta checked.");
