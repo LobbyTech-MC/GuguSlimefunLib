@@ -2,6 +2,8 @@ package me.ddggdd135.guguslimefunlib.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -14,7 +16,7 @@ public class PotionUtils {
         String effectName = split[0];
         int amplifier = Integer.parseInt(split[1]);
 
-        PotionEffectType type = PotionEffectType.getByName(effectName);
+        PotionEffectType type = Registry.EFFECT.get(NamespacedKey.minecraft(effectName.toLowerCase()));
         if (type == null) {
             throw new IllegalArgumentException("错误的药水效果类型");
         }
