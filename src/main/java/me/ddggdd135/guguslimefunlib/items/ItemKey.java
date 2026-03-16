@@ -18,7 +18,7 @@ public class ItemKey {
             this.nms = CraftBukkit.ITEMSTACK.unwrapToNMS(itemStack);
             this.itemStack = CraftBukkit.ITEMSTACK.asCraftMirror(nms);
             this.type = ItemUtils.getItemType(itemStack);
-            this.hash = type.hashCode();
+            this.hash = NMSItem.ITEMSTACK.customHashcode(nms);
         } catch (Throwable throwable) {
             throw new RuntimeException(throwable);
         }
