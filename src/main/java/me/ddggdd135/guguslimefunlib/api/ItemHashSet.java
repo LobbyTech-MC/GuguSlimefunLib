@@ -16,7 +16,7 @@ public class ItemHashSet implements Set<ItemKey> {
 
     @Override
     public boolean remove(Object e) {
-        if (e instanceof ItemKey itemKey) return map.removeKey(itemKey);
+        if (e instanceof ItemKey itemKey) return map.removeKey(itemKey) != null;
         return map.remove(e) != null;
     }
 
